@@ -14,6 +14,10 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
+ * @property int $id
+ * @property string $member_card_number
+ * @property string $phone_number
+ *
  * @method static UserFactory factory($count = null, $state = [])
  *
  * @mixin Builder
@@ -31,6 +35,8 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'member_card_number',
+        'phone_number',
     ];
 
     /**

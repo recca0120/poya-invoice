@@ -50,7 +50,10 @@ class EventUserRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
                 Tables\Actions\ImportAction::make()
                     ->importer(EventUserImporter::class)
-                    ->options(['event_id' => $this->getOwnerRecord()->id]),
+                    ->options([
+                        'sn_label' => $this->getOwnerRecord()->type->getColumnName(),
+                        'event_id' => $this->getOwnerRecord()->id,
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

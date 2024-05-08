@@ -5,6 +5,7 @@ namespace Tests\Feature\Filament\Resources\EventResource\RelationManagers;
 use App\Filament\Resources\EventResource\Pages\EditEvent;
 use App\Filament\Resources\EventResource\RelationManagers\EventUserRelationManager;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Testing\File;
 use Illuminate\Http\UploadedFile;
@@ -44,7 +45,7 @@ class EventUserRelationManagerTest extends TestCase
         $this->assertDatabaseHas('event_user', $data);
     }
 
-    public function test_import_event_user_from_csv(): void
+    public function test_import_exist_user_to_event_user_from_csv(): void
     {
         $this->givenSuperAdminUser();
 
@@ -55,9 +56,20 @@ class EventUserRelationManagerTest extends TestCase
             'ownerRecord' => $event, 'pageClass' => EditEvent::class,
         ])->assertOk();
 
-        $headers = ['user_id', 'sn', 'approved'];
+        $sn = fake()->uuid();
+        $name = '王小明';
+        $memberCardNumber = fake()->creditCardNumber();
+        $phoneNumber = fake()->phoneNumber();
+
+        /** @var User $user */
+        $user = User::factory()->createOne([
+            'member_card_number' => $memberCardNumber,
+            'phone_number' => $phoneNumber,
+        ]);
+
+        $headers = ['sn', 'name', 'member_card_number', 'phone_number', 'approved'];
         $data = [
-            ['1', '1', '1'],
+            [$sn, $name, $memberCardNumber, $phoneNumber, 1],
         ];
 
         $csv = $this->createCsv($headers, $data);
@@ -69,9 +81,48 @@ class EventUserRelationManagerTest extends TestCase
 
         $this->assertDatabaseHas('event_user', [
             'event_id' => $event->id,
-            'user_id' => 1,
-            'sn' => 1,
+            'user_id' => $user->id,
+            'sn' => $sn,
             'approved' => 1,
+        ]);
+    }
+
+    public function test_import_not_exist_user_to_event_user_from_csv(): void
+    {
+        $this->givenSuperAdminUser();
+
+        /** @var Event $event */
+        $event = Event::factory()->createOne();
+
+        $testable = Livewire::test(EventUserRelationManager::class, [
+            'ownerRecord' => $event, 'pageClass' => EditEvent::class,
+        ])->assertOk();
+
+        $sn = fake()->uuid();
+        $name = '王小明';
+        $memberCardNumber = fake()->creditCardNumber();
+        $phoneNumber = fake()->phoneNumber();
+
+        $headers = ['name', '發票號碼或活動序號', 'member_card_number', 'phone_number', 'approved'];
+        $data = [
+            [$name, $sn, $memberCardNumber, $phoneNumber, '是'],
+        ];
+
+        $csv = $this->createCsv($headers, $data);
+        $testable
+            ->mountTableAction('import')
+            ->setTableActionData(['file' => $csv])
+            ->callMountedTableAction()
+            ->assertHasNoTableActionErrors();
+
+        $this->assertDatabaseHas('event_user', [
+            'event_id' => $event->id,
+            'sn' => $sn,
+            'approved' => 1,
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'phone_number' => $phoneNumber,
         ]);
     }
 
