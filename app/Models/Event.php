@@ -44,9 +44,14 @@ class Event extends Model implements HasMedia
         ];
     }
 
-    public function eventUser(): HasMany
+    public function eventUsers(): HasMany
     {
         return $this->hasMany(EventUser::class);
+    }
+
+    public function eventPrizes(): HasMany
+    {
+        return $this->hasMany(EventPrize::class);
     }
 
     public function users(): BelongsToMany

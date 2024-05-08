@@ -3,7 +3,7 @@
 namespace Tests\Feature\Filament\Resources\EventResource\RelationManagers;
 
 use App\Filament\Resources\EventResource\Pages\EditEvent;
-use App\Filament\Resources\EventResource\RelationManagers\EventUserRelationManager;
+use App\Filament\Resources\EventResource\RelationManagers\EventUsersRelationManager;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -13,7 +13,7 @@ use Livewire\Livewire;
 use Tests\Feature\Filament\Resources\HasLoginUser;
 use Tests\TestCase;
 
-class EventUserRelationManagerTest extends TestCase
+class EventUsersRelationManagerTest extends TestCase
 {
     use HasLoginUser;
     use LazilyRefreshDatabase;
@@ -25,7 +25,7 @@ class EventUserRelationManagerTest extends TestCase
         /** @var Event $event */
         $event = Event::factory()->createOne();
 
-        $testable = Livewire::test(EventUserRelationManager::class, [
+        $testable = Livewire::test(EventUsersRelationManager::class, [
             'ownerRecord' => $event, 'pageClass' => EditEvent::class,
         ])->assertOk();
 
@@ -52,7 +52,7 @@ class EventUserRelationManagerTest extends TestCase
         /** @var Event $event */
         $event = Event::factory()->createOne();
 
-        $testable = Livewire::test(EventUserRelationManager::class, [
+        $testable = Livewire::test(EventUsersRelationManager::class, [
             'ownerRecord' => $event, 'pageClass' => EditEvent::class,
         ])->assertOk();
 
@@ -94,7 +94,7 @@ class EventUserRelationManagerTest extends TestCase
         /** @var Event $event */
         $event = Event::factory()->createOne();
 
-        $testable = Livewire::test(EventUserRelationManager::class, [
+        $testable = Livewire::test(EventUsersRelationManager::class, [
             'ownerRecord' => $event, 'pageClass' => EditEvent::class,
         ])->assertOk();
 
@@ -129,7 +129,7 @@ class EventUserRelationManagerTest extends TestCase
     private function createCsv(array $headers, array $data): File
     {
         $content = implode("\n", array_map(
-            static fn ($data) => implode(",", $data),
+            static fn ($data) => implode(',', $data),
             [$headers, ...$data]
         ));
 

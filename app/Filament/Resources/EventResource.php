@@ -107,7 +107,8 @@ class EventResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\EventUserRelationManager::class,
+            RelationManagers\EventUsersRelationManager::class,
+            RelationManagers\EventPrizesRelationManager::class,
         ];
     }
 

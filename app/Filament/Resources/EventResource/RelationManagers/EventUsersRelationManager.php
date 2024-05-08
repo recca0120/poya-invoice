@@ -11,9 +11,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class EventUserRelationManager extends RelationManager
+class EventUsersRelationManager extends RelationManager
 {
-    protected static string $relationship = 'eventUser';
+    protected static string $relationship = 'eventUsers';
 
     public function form(Form $form): Form
     {

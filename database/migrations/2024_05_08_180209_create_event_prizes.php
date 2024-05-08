@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('member_card_number')->nullable()->unique();
-            $table->string('phone_number')->nullable();
+        Schema::create('event_prizes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('event_id')->index();
+            $table->string('name');
+            $table->unsignedInteger('quantity')->default(1);
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['member_card_number', 'phone_number']);
-        });
+        Schema::dropIfExists('event_prizes');
     }
 };
