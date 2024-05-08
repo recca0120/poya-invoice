@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EventType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 /**
  * @property int $id
  * @property EventType $type
+ * @property Carbon $started_at
+ * @property Carbon $ended_at
  *
  * @mixin Builder
  */
@@ -63,5 +66,10 @@ class Event extends Model implements HasMedia
     {
         $this->addMediaConversion('banner')->nonQueued();
         $this->addMediaConversion('background')->nonQueued();
+    }
+
+    public function isEnd(): bool
+    {
+        return $this->ended_at->lessThanOrEqualTo(now());
     }
 }

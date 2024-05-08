@@ -94,10 +94,11 @@ class EventResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('lottery')
+                Tables\Actions\Action::make('darw')
                     ->label('抽獎')
                     ->icon('heroicon-o-gift')
-                    ->color(Color::Teal),
+                    ->color(Color::Teal)
+                    ->visible(static fn (Event $record) => $record->isEnd()),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
