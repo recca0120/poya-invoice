@@ -15,8 +15,10 @@ return new class extends Migration {
             $table->string('code')->unique();
             $table->string('name');
             $table->string('type');
-            $table->dateTime('start_at');
-            $table->dateTime('end_at');
+            $table->text('terms')->nullable();
+            $table->text('privacy')->nullable();
+            $table->dateTime('started_at');
+            $table->dateTime('ended_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

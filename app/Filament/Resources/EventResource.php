@@ -33,15 +33,22 @@ class EventResource extends Resource
                     ->default(EventType::INVOICE)
                     ->grouped()
                     ->inline()
+                    ->columnSpanFull()
                     ->required(),
-                Forms\Components\DateTimePicker::make('start_at')
+                Forms\Components\DateTimePicker::make('started_at')
                     ->label('活動開始時間')
                     ->native(false)
                     ->required(),
-                Forms\Components\DateTimePicker::make('end_at')
+                Forms\Components\DateTimePicker::make('ended_at')
                     ->label('活動結束時間')
                     ->native(false)
                     ->required(),
+                Forms\Components\RichEditor::make('terms')
+                    ->label('活動條款')
+                    ->columnSpanFull(),
+                Forms\Components\RichEditor::make('privacy')
+                    ->label('個人資料聲明')
+                    ->columnSpanFull(),
                 SpatieMediaLibraryFileUpload::make('banner')
                     ->collection('banner')
                     ->required(),
@@ -55,7 +62,10 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('code')->label('活動代號'),
+                Tables\Columns\TextColumn::make('name')->label('活動名稱'),
+                Tables\Columns\TextColumn::make('started_at')->label('開始時間'),
+                Tables\Columns\TextColumn::make('ended_at')->label('結束時間'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

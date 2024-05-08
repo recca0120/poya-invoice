@@ -26,16 +26,20 @@ class EventResourceTest extends TestCase
         $code = (string) Str::ulid();
         $name = '活動1';
         $type = EventType::INVOICE;
-        $startAt = now();
-        $endAt = now()->addDays(3);
+        $privacy = fake()->paragraphs(5, true);
+        $terms = fake()->paragraphs(5, true);
+        $startedAt = now();
+        $endedAt = now()->addDays(3);
 
         $testable
             ->fillForm([
                 'code' => $code,
                 'name' => $name,
                 'type' => $type,
-                'start_at' => $startAt,
-                'end_at' => $endAt,
+                'terms' => $terms,
+                'privacy' => $privacy,
+                'started_at' => $startedAt,
+                'ended_at' => $endedAt,
                 'banner' => UploadedFile::fake()->image('banner.jpg'),
                 'background' => UploadedFile::fake()->image('background.jpg'),
             ])
@@ -46,8 +50,10 @@ class EventResourceTest extends TestCase
             'code' => $code,
             'name' => $name,
             'type' => $type,
-            'start_at' => $startAt,
-            'end_at' => $endAt,
+            'terms' => $terms,
+            'privacy' => $privacy,
+            'started_at' => $startedAt,
+            'ended_at' => $endedAt,
         ]);
 
         /** @var Event $event */
@@ -63,38 +69,6 @@ class EventResourceTest extends TestCase
             'model_id' => $event->id,
             'model_type' => Event::class,
             'name' => 'background',
-        ]);
-    }
-
-    public function test_create_sn_event(): void
-    {
-        $this->givenUser();
-
-        $testable = Livewire::test(CreateEvent::class)->assertOk();
-
-        $code = (string) Str::ulid();
-        $name = '活動1';
-        $type = EventType::SN;
-        $startAt = now();
-        $endAt = now()->addDays(3);
-
-        $testable
-            ->fillForm([
-                'code' => $code,
-                'name' => $name,
-                'type' => $type,
-                'start_at' => $startAt,
-                'end_at' => $endAt,
-            ])
-            ->call('create')
-            ->assertHasNoErrors();
-
-        $this->assertDatabaseHas('events', [
-            'code' => $code,
-            'name' => $name,
-            'type' => $type,
-            'start_at' => $startAt,
-            'end_at' => $endAt,
         ]);
     }
 

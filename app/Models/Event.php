@@ -26,16 +26,18 @@ class Event extends Model implements HasMedia
         'code',
         'name',
         'type',
-        'start_at',
-        'end_at',
+        'terms',
+        'privacy',
+        'started_at',
+        'ended_at',
     ];
 
     protected function casts(): array
     {
         return [
             'type' => EventType::class,
-            'start_at' => 'datetime',
-            'end_at' => 'datetime',
+            'started_at' => 'datetime',
+            'ended_at' => 'datetime',
         ];
     }
 
