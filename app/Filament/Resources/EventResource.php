@@ -26,10 +26,10 @@ class EventResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Grid::make()
-                    ->columns(['sm' => 9, 'lg' => null])
+                    ->columns(['lg' => 3])
                     ->schema([
                         Forms\Components\Section::make()
-                            ->columnSpan(['lg' => 6])
+                            ->columnSpan(['lg' => 2])
                             ->schema([
                                 Forms\Components\TextInput::make('code')->label('活動代號')->required(),
                                 Forms\Components\TextInput::make('name')->label('活動名稱')->required(),
@@ -48,7 +48,7 @@ class EventResource extends Resource
                                     ->columnSpanFull(),
                             ]),
                         Forms\Components\Group::make()
-                            ->columnSpan(['lg' => 3])
+                            ->columnSpan(['lg' => 1])
                             ->schema([
                                 Forms\Components\Section::make()->schema([
                                     Forms\Components\DateTimePicker::make('started_at')

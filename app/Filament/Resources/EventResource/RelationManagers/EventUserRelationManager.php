@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EventResource\RelationManagers;
 
+use App\Filament\Imports\EventUserImporter;
 use App\Models\Event;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,7 +27,7 @@ class EventUserRelationManager extends RelationManager
                 Forms\Components\TextInput::make('sn')
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord()))
                     ->required(),
-                Forms\Components\Toggle::make('approved')->inlineLabel(false),
+                Forms\Components\Toggle::make('approved')->inline(false),
             ]);
     }
 
@@ -40,12 +41,16 @@ class EventUserRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('user.name')->label('姓名'),
                 Tables\Columns\TextColumn::make('sn')
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord())),
+                Tables\Columns\ToggleColumn::make('approved'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                Tables\Actions\ImportAction::make()
+                    ->importer(EventUserImporter::class)
+                    ->options(['event_id' => $this->getOwnerRecord()->id]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
