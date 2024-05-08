@@ -14,12 +14,13 @@ use Tests\TestCase;
 
 class EventResourceTest extends TestCase
 {
+    use HasLoginUser;
     use LazilyRefreshDatabase;
 
     public function test_create_invoice_event(): void
     {
         /** @var User $user */
-        $this->givenUser();
+        $this->givenSuperAdminUser();
 
         $testable = Livewire::test(CreateEvent::class)->assertOk();
 
@@ -70,13 +71,5 @@ class EventResourceTest extends TestCase
             'model_type' => Event::class,
             'name' => 'background',
         ]);
-    }
-
-    private function givenUser(): User
-    {
-        return tap(
-            User::factory()->role('super_admin')->createOne(),
-            static fn (User $user) => Livewire::actingAs($user)
-        );
     }
 }

@@ -16,4 +16,12 @@ enum EventType: string implements HasLabel
             self::SN => '序號登錄'
         };
     }
+
+    public function getColumnName(): string
+    {
+        return match ($this) {
+            self::INVOICE => '發票號碼',
+            self::SN => '活動序號'
+        };
+    }
 }
