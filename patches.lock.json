@@ -1,0 +1,17 @@
+{
+    "_hash": "4dd41f5c1a3c8f2134c0aa5f8e5b44006e56fa1c43a2fc89b31089f1d6239324",
+    "patches": {
+        "bezhansalleh/filament-shield": [
+            {
+                "package": "bezhansalleh/filament-shield",
+                "description": "0001-fix-tab-bug",
+                "url": "patches/bezhansalleh/filament-shield/0001-fix-tab-bug.patch",
+                "sha256": "930b6e881f2652711987e7726699d5b27a2431fef748bc85f1b577a12a2839cc",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}
