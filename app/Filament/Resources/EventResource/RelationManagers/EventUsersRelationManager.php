@@ -39,6 +39,8 @@ class EventUsersRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('event.code')->label('活動代號'),
                 Tables\Columns\TextColumn::make('user.name')->label('姓名'),
+                Tables\Columns\TextColumn::make('user.member_card_number')->label('會員卡號'),
+                Tables\Columns\TextColumn::make('user.phone_number')->label('手機號碼'),
                 Tables\Columns\TextColumn::make('sn')
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord())),
                 Tables\Columns\ToggleColumn::make('approved'),
