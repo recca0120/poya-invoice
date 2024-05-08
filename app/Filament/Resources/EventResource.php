@@ -7,6 +7,7 @@ use App\Filament\Resources\EventResource\Pages;
 use App\Filament\Resources\EventResource\RelationManagers;
 use App\Models\Event;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,6 +30,7 @@ class EventResource extends Resource
                 Forms\Components\TextInput::make('name')->label('活動名稱')->required(),
                 Forms\Components\ToggleButtons::make('type')->label('登錄類型')
                     ->options(EventType::class)
+                    ->default(EventType::INVOICE)
                     ->grouped()
                     ->inline()
                     ->required(),
@@ -39,6 +41,12 @@ class EventResource extends Resource
                 Forms\Components\DateTimePicker::make('end_at')
                     ->label('活動結束時間')
                     ->native(false)
+                    ->required(),
+                SpatieMediaLibraryFileUpload::make('banner')
+                    ->collection('banner')
+                    ->required(),
+                SpatieMediaLibraryFileUpload::make('background')
+                    ->collection('background')
                     ->required(),
             ]);
     }

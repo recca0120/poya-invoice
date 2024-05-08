@@ -4,8 +4,10 @@ namespace Tests\Feature\Filament\Resources;
 
 use App\Enums\EventType;
 use App\Filament\Resources\EventResource\Pages\CreateEvent;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -34,6 +36,8 @@ class EventResourceTest extends TestCase
                 'type' => $type,
                 'start_at' => $startAt,
                 'end_at' => $endAt,
+                'banner' => UploadedFile::fake()->image('banner.jpg'),
+                'background' => UploadedFile::fake()->image('background.jpg'),
             ])
             ->call('create')
             ->assertHasNoErrors();
@@ -44,6 +48,21 @@ class EventResourceTest extends TestCase
             'type' => $type,
             'start_at' => $startAt,
             'end_at' => $endAt,
+        ]);
+
+        /** @var Event $event */
+        $event = Event::where('code', $code)->sole();
+
+        $this->assertDatabaseHas('media', [
+            'model_id' => $event->id,
+            'model_type' => Event::class,
+            'name' => 'banner',
+        ]);
+
+        $this->assertDatabaseHas('media', [
+            'model_id' => $event->id,
+            'model_type' => Event::class,
+            'name' => 'background',
         ]);
     }
 
