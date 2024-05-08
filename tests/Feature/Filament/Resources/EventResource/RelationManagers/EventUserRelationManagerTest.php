@@ -29,6 +29,7 @@ class EventUserRelationManagerTest extends TestCase
         $data = [
             'user_id' => 1,
             'sn' => fake()->uuid(),
+            'approved' => true,
         ];
 
         $testable
@@ -37,5 +38,7 @@ class EventUserRelationManagerTest extends TestCase
             ->assertTableActionDataSet($data)
             ->callMountedTableAction()
             ->assertHasNoTableActionErrors();
+
+        $this->assertDatabaseHas('event_user', $data);
     }
 }

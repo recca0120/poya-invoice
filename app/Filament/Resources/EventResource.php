@@ -25,35 +25,58 @@ class EventResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')->label('活動代號')->required(),
-                Forms\Components\TextInput::make('name')->label('活動名稱')->required(),
-                Forms\Components\ToggleButtons::make('type')->label('登錄類型')
-                    ->options(EventType::class)
-                    ->default(EventType::INVOICE)
-                    ->grouped()
-                    ->inline()
-                    ->columnSpanFull()
-                    ->required(),
-                Forms\Components\DateTimePicker::make('started_at')
-                    ->label('活動開始時間')
-                    ->native(false)
-                    ->required(),
-                Forms\Components\DateTimePicker::make('ended_at')
-                    ->label('活動結束時間')
-                    ->native(false)
-                    ->required(),
-                Forms\Components\RichEditor::make('terms')
-                    ->label('活動條款')
-                    ->columnSpanFull(),
-                Forms\Components\RichEditor::make('privacy')
-                    ->label('個人資料聲明')
-                    ->columnSpanFull(),
-                SpatieMediaLibraryFileUpload::make('banner')
-                    ->collection('banner')
-                    ->required(),
-                SpatieMediaLibraryFileUpload::make('background')
-                    ->collection('background')
-                    ->required(),
+                Forms\Components\Grid::make()
+                    ->columns(['sm' => 9, 'lg' => null])
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->columnSpan(['lg' => 6])
+                            ->schema([
+                                Forms\Components\TextInput::make('code')->label('活動代號')->required(),
+                                Forms\Components\TextInput::make('name')->label('活動名稱')->required(),
+                                Forms\Components\ToggleButtons::make('type')->label('登錄類型')
+                                    ->options(EventType::class)
+                                    ->default(EventType::INVOICE)
+                                    ->grouped()
+                                    ->inline()
+                                    ->columnSpanFull()
+                                    ->required(),
+                                Forms\Components\RichEditor::make('terms')
+                                    ->label('活動條款')
+                                    ->columnSpanFull(),
+                                Forms\Components\RichEditor::make('privacy')
+                                    ->label('個人資料聲明')
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Group::make()
+                            ->columnSpan(['lg' => 3])
+                            ->schema([
+                                Forms\Components\Section::make()->schema([
+                                    Forms\Components\DateTimePicker::make('started_at')
+                                        ->label('活動開始時間')
+                                        ->native(false)
+                                        ->required(),
+                                    Forms\Components\DateTimePicker::make('ended_at')
+                                        ->label('活動結束時間')
+                                        ->native(false)
+                                        ->required(),
+                                ]),
+                                Forms\Components\Section::make()
+                                    ->heading('Banner')
+                                    ->schema([
+                                        SpatieMediaLibraryFileUpload::make('banner')
+                                            ->collection('banner')
+                                            ->required(),
+                                    ]),
+
+                                Forms\Components\Section::make()
+                                    ->heading('背景圖')
+                                    ->schema([
+                                        SpatieMediaLibraryFileUpload::make('background')
+                                            ->collection('background')
+                                            ->required(),
+                                    ]),
+                            ]),
+                    ]),
             ]);
     }
 

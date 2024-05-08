@@ -14,7 +14,15 @@ class EventUser extends Pivot
         'user_id',
         'event_id',
         'sn',
+        'approved',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'approved' => 'bool',
+        ];
+    }
 
     public function user(): BelongsTo
     {
