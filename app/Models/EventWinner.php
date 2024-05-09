@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -19,14 +20,13 @@ class EventWinner extends Pivot
     use HasFactory;
 
     protected $fillable = [
-        'event_id',
         'event_prize_id',
         'user_id',
     ];
 
-    public function event(): BelongsTo
+    public function event(): HasOneThrough
     {
-        return $this->belongsTo(Event::class);
+        return $this->hasOneThrough(Event::class, EventPrize::class);
     }
 
     public function eventPrize(): BelongsTo

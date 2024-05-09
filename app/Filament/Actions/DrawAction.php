@@ -73,9 +73,8 @@ class DrawAction extends Action
                     $prizes
                         ->reject(fn (Fluent $prize) => ! $prize->user_id)
                         ->unique(fn (Fluent $prize) => [$prize->event_prize_id, $prize->user_id])
-                        ->each(function (Fluent $prize) use ($record) {
+                        ->each(function (Fluent $prize) {
                             return EventWinner::create([
-                                'event_id' => $record->id,
                                 'event_prize_id' => $prize->event_prize_id,
                                 'user_id' => $prize->user_id,
                             ]);

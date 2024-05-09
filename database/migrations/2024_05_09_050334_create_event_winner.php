@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('event_winner', function (Blueprint $table) {
-            $table->foreignId('event_id')->index();
             $table->foreignId('event_prize_id')->index();
             $table->foreignId('user_id')->index();
             $table->timestamps();
