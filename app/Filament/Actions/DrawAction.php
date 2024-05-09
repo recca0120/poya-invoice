@@ -2,7 +2,7 @@
 
 namespace App\Filament\Actions;
 
-use App\Enums\YesOrNo;
+use App\Enums\YesNo;
 use App\Models\Event;
 use App\Models\EventPrize;
 use App\Models\EventWinner;
@@ -10,6 +10,7 @@ use Filament\Actions\Action;
 use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Support\Colors\Color;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 
@@ -28,52 +29,68 @@ class DrawAction extends Action
             ->form([
                 ToggleButtons::make('repeat')
                     ->label('同會員可重複中獎')
-                    ->options(YesOrNo::class)
+                    ->options(YesNo::class)
                     ->grouped()
                     ->inlineLabel(false)
-                    ->default(YesOrNo::NO->value),
+                    ->default(YesNo::NO->value),
             ])
             ->requiresConfirmation(static fn (Event $record) => $record->drawn === true)
             ->action(function (array $data) {
                 $this->process(function (Event $record) use ($data) {
-                    $repeat = YesOrNo::from($data['repeat']);
+                    $repeat = YesNo::from($data['repeat']) === YesNo::NO;
 
-                    $users = $record
+                    $availableUsers = $record
                         ->eventUsers()
                         ->where('approved', true)
                         ->pluck('user_id');
 
-                    $prizes = $record->eventPrizes
-                        ->map(fn (EventPrize $prize) => collect(range(1, $prize->quantity))->map(fn () => new Fluent([
-                            'event_prize_id' => $prize->id, 'user_id' => null,
-                        ])))
-                        ->collapse()
-                        ->shuffle();
+                    /** @var Collection<int, object{event_prize_id: int, 'user_id': ?int}> $availablePrizes */
+                    $availablePrizes = $record->eventPrizes
+                        ->map(fn (EventPrize $prize) => collect(range(1, $prize->quantity))
+                            ->map(fn () => new Fluent(['event_prize_id' => $prize->id, 'user_id' => null])))
+                        ->collapse();
 
                     EventWinner::query()->toBase()->where('event_id', $record->id)->truncate();
-                    while ($users->isNotEmpty()) {
-                        $drawablePrizes = $prizes->reject(fn (Fluent $prize) => $prize->user_id);
-                        /** @var Fluent $prize */
-                        $prize = $drawablePrizes->first();
-
-                        if (! $prize) {
+                    while (true) {
+                        if ($availableUsers->isEmpty()) {
                             break;
                         }
 
-                        $drawnUsers = $prizes->filter(fn (Fluent $tmp) => $tmp->id === $prize->id)->toArray();
-                        $prize->user_id = $users
-                            ->reject(fn (int $id) => in_array($id, $drawnUsers, true))
-                            ->random();
+                        $drawablePrizes = $availablePrizes->reject(fn ($prize) => $prize->user_id);
 
-                        if ($repeat === YesOrNo::NO) {
-                            $users = $users->reject($prize->user_id);
+                        if ($drawablePrizes->isEmpty()) {
+                            break;
+                        }
+
+                        /** @var object{event_prize_id: int, user_id: ?int} $currentPrize */
+                        $currentPrize = $drawablePrizes->first();
+
+                        $drawableUsers = $availableUsers->diff(
+                            $availablePrizes->filter(function ($prize) use ($currentPrize) {
+                                return $prize->user_id && $prize->event_prize_id === $currentPrize->event_prize_id;
+                            })->pluck('user_id')
+                        );
+
+                        if ($drawableUsers->isEmpty()) {
+                            $availablePrizes = $availablePrizes->reject(function ($prize) use ($currentPrize) {
+                                return $prize->event_prize_id === $currentPrize->event_prize_id && ! $prize->user_id;
+                            });
+
+                            continue;
+                        }
+
+                        $currentPrize->user_id = $drawableUsers->random();
+
+                        if ($repeat) {
+                            $availableUsers = $availableUsers->reject($currentPrize->user_id);
                         }
                     }
+
                     DB::beginTransaction();
-                    $prizes
-                        ->reject(fn (Fluent $prize) => ! $prize->user_id)
-                        ->unique(fn (Fluent $prize) => [$prize->event_prize_id, $prize->user_id])
-                        ->each(function (Fluent $prize) {
+                    $availablePrizes
+                        ->reject(fn ($prize) => ! $prize->user_id)
+                        ->unique(fn ($prize) => [$prize->event_prize_id, $prize->user_id])
+                        ->each(function ($prize) {
                             return EventWinner::create([
                                 'event_prize_id' => $prize->event_prize_id,
                                 'user_id' => $prize->user_id,

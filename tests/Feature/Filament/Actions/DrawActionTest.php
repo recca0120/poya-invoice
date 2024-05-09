@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Filament\Actions;
 
-use App\Enums\YesOrNo;
+use App\Enums\YesNo;
 use App\Filament\Actions\DrawAction;
 use App\Models\Event;
 use App\Models\EventPrize;
@@ -36,7 +36,7 @@ class DrawActionTest extends TestCase
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => YesOrNo::NO->value]]);
+        $action->call(['data' => ['repeat' => YesNo::NO->value]]);
 
         $this->assertDatabaseCount('event_winner', 1);
         $this->shouldBeRepeatWinners(false);
@@ -50,7 +50,7 @@ class DrawActionTest extends TestCase
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => YesOrNo::NO->value]]);
+        $action->call(['data' => ['repeat' => YesNo::NO->value]]);
 
         $this->assertDatabaseCount('event_winner', 2);
         $this->shouldBeRepeatWinners(false);
@@ -58,29 +58,29 @@ class DrawActionTest extends TestCase
 
     public function test_2_prizes_1_users_and_can_repeat_winner(): void
     {
-        $this->givenPrize(1);
-        $this->givenPrize(1);
+        $this->givenPrize(2);
+        $this->givenPrize(2);
         $this->givenUsers(1);
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => YesOrNo::YES->value]]);
+        $action->call(['data' => ['repeat' => YesNo::YES->value]]);
 
         $this->assertDatabaseCount('event_winner', 2);
         $this->shouldBeRepeatWinners(true);
     }
 
-    public function test_2_prizes_4_users_and_can_repeat_winner(): void
+    public function test_4_prizes_2_users_and_can_repeat_winner(): void
     {
-        $this->givenPrize(1);
-        $this->givenPrize(1);
-        $this->givenUsers(4);
+        $this->givenPrize(2);
+        $this->givenPrize(2);
+        $this->givenUsers(2);
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => YesOrNo::YES->value]]);
+        $action->call(['data' => ['repeat' => YesNo::YES->value]]);
 
-        $this->assertDatabaseCount('event_winner', 2);
+        $this->assertDatabaseCount('event_winner', 4);
     }
 
     private function givenUsers(int $count, bool $approved = true): Collection

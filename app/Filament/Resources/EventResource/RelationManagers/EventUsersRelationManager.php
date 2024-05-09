@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\EventResource\RelationManagers;
 
-use App\Enums\YesOrNo;
+use App\Enums\YesNo;
 use App\Filament\Imports\EventUserImporter;
 use App\Models\Event;
 use Filament\Forms;
@@ -38,7 +38,7 @@ class EventUsersRelationManager extends RelationManager
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord()))
                     ->required(),
                 Forms\Components\ToggleButtons::make('approved')
-                    ->options(YesOrNo::class)
+                    ->options(YesNo::class)
                     ->grouped(),
             ]);
     }

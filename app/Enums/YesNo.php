@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum YesOrNo: string implements HasColor, HasLabel
+enum YesNo: string implements HasColor, HasLabel
 {
     case YES = 'yes';
     case NO = 'no';
