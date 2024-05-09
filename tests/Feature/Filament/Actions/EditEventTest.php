@@ -18,10 +18,6 @@ class EditEventTest extends TestCase
     use HasLoginUser;
 
     private Event $event;
-    private EventPrize $firstPrize;
-    private EventPrize $secondaryPrize;
-    private EventPrize $thirdPrize;
-    private EventPrize $otherPrize;
 
     protected function setUp(): void
     {
@@ -30,21 +26,18 @@ class EditEventTest extends TestCase
         /** @var Event $event */
         $this->event = Event::factory()->createOne();
 
-        $factory = EventPrize::factory()->state(['event_id' => $this->event->id]);
-        $this->firstPrize = $factory->createOne(['name' => 'First Prize', 'quantity' => 1]);
-        $this->secondaryPrize = $factory->createOne(['name' => 'Secondary Prize', 'quantity' => 2]);
-        $this->thirdPrize = $factory->createOne(['name' => 'Third Prize', 'quantity' => 3]);
-        $this->otherPrize = $factory->createOne(['name' => 'Third Prize', 'quantity' => 50]);
     }
 
-    public function test_draw_action(): void
+    public function test_2_prizes_4_users_and_can_not_repeat_winner(): void
     {
-        $this->givenUsers(100, true);
-        $this->givenUsers(1, true);
+        $this->givenPrize(2);
+        $this->givenUsers(4, true);
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
         $action->call(['data' => ['repeat' => false]]);
+
+        $this->assertDatabaseCount('event_winners', 2);
     }
 
     private function givenUsers(int $count, bool $approved): Collection
@@ -52,5 +45,12 @@ class EditEventTest extends TestCase
         $eventUserFactory = EventUser::factory()->state(['event_id' => $this->event->id]);
 
         return $eventUserFactory->count($count)->create(['approved' => $approved]);
+    }
+
+    private function givenPrize($quantity): EventPrize
+    {
+        return EventPrize::factory()
+            ->state(['event_id' => $this->event->id])
+            ->createOne(['name' => fake()->name(), 'quantity' => $quantity]);
     }
 }

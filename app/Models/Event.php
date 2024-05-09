@@ -60,6 +60,11 @@ class Event extends Model implements HasMedia
         return $this->hasMany(EventPrize::class);
     }
 
+    public function eventWinners(): HasMany
+    {
+        return $this->hasMany(EventWinner::class);
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)->using(EventUser::class);

@@ -4,9 +4,13 @@ namespace App\Filament\Actions;
 
 use App\Enums\YesOrNo;
 use App\Models\Event;
+use App\Models\EventPrize;
+use App\Models\EventWinner;
 use Filament\Actions\Action;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Fluent;
 
 class DrawAction extends Action
 {
@@ -27,14 +31,37 @@ class DrawAction extends Action
                     ->default(YesOrNo::NO->value),
             ])
             ->action(function (Event $record, array $data) {
-                $prizes = $record->eventPrizes;
-                $quantity = $prizes->sum('quantity');
+                $repeat = $data['repeat'];
                 $users = $record
                     ->eventUsers()
                     ->where('approved', true)
                     ->pluck('user_id');
-                dump($quantity);
-                dump($users);
+
+                $prizes = $record->eventPrizes->map(function (EventPrize $prize) {
+                    return collect(range(1, $prize->quantity))
+                        ->map(fn () => new Fluent([
+                            'event_prize_id' => $prize->id,
+                            'user_id' => null,
+                        ]));
+                })->collapse();
+
+                DB::beginTransaction();
+                while ($prizes->isNotEmpty() && $users->isNotEmpty()) {
+                    /** @var Fluent $prize */
+                    $prize = $prizes->shift();
+                    $prize->user_id = $users->random();
+
+                    if ($repeat) {
+                        $users = $users->reject($prize->user_id);
+                    }
+
+                    EventWinner::create([
+                        'event_id' => $record->id,
+                        'event_prize_id' => $prize->event_prize_id,
+                        'user_id' => $prize->user_id,
+                    ]);
+                }
+                DB::commit();
             });
     }
 }
