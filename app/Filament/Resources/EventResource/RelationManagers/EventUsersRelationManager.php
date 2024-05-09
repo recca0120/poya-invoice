@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EventResource\RelationManagers;
 
+use App\Enums\YesOrNo;
 use App\Filament\Imports\EventUserImporter;
 use App\Models\Event;
 use Filament\Forms;
@@ -11,6 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @method Event getOwnerRecord()
+ */
 class EventUsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'eventUsers';
@@ -27,7 +31,9 @@ class EventUsersRelationManager extends RelationManager
                 Forms\Components\TextInput::make('sn')
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord()))
                     ->required(),
-                Forms\Components\Toggle::make('approved')->inline(false),
+                Forms\Components\ToggleButtons::make('approved')
+                    ->options(YesOrNo::class)
+                    ->grouped(),
             ]);
     }
 

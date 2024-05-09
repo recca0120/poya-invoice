@@ -10,7 +10,6 @@ use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -94,11 +93,11 @@ class EventResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('darw')
-                    ->label('抽獎')
-                    ->icon('heroicon-o-gift')
-                    ->color(Color::Teal)
-                    ->visible(static fn (Event $record) => $record->isEnd()),
+                // Tables\Actions\Action::make('draw')
+                //     ->label('抽獎')
+                //     ->icon('heroicon-o-gift')
+                //     ->color(Color::Teal)
+                //     ->visible(static fn (Event $record) => $record->isEnd()),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

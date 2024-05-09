@@ -2,12 +2,16 @@
 
 namespace App\Filament\Resources\EventResource\RelationManagers;
 
+use App\Models\Event;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
+/**
+ * @method Event getOwnerRecord()
+ */
 class EventPrizesRelationManager extends RelationManager
 {
     protected static string $relationship = 'eventPrizes';
