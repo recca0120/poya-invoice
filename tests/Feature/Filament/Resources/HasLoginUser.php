@@ -7,7 +7,7 @@ use Livewire\Livewire;
 
 trait HasLoginUser
 {
-    protected function givenSuperAdminUser(): User
+    protected function givenSuperAdmin(): User
     {
         return $this->givenUser('super_admin');
     }

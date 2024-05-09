@@ -20,7 +20,7 @@ class EventUsersRelationManagerTest extends TestCase
 
     public function test_create_new_user(): void
     {
-        $this->givenSuperAdminUser();
+        $this->givenSuperAdmin();
 
         /** @var Event $event */
         $event = Event::factory()->createOne();
@@ -47,7 +47,7 @@ class EventUsersRelationManagerTest extends TestCase
 
     public function test_import_exist_user_to_event_user_from_csv(): void
     {
-        $this->givenSuperAdminUser();
+        $this->givenSuperAdmin();
 
         /** @var Event $event */
         $event = Event::factory()->createOne();
@@ -89,7 +89,7 @@ class EventUsersRelationManagerTest extends TestCase
 
     public function test_import_not_exist_user_to_event_user_from_csv(): void
     {
-        $this->givenSuperAdminUser();
+        $this->givenSuperAdmin();
 
         /** @var Event $event */
         $event = Event::factory()->createOne();

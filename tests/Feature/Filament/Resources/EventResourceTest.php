@@ -20,7 +20,7 @@ class EventResourceTest extends TestCase
     public function test_create_invoice_event(): void
     {
         /** @var User $user */
-        $this->givenSuperAdminUser();
+        $this->givenSuperAdmin();
 
         $testable = Livewire::test(CreateEvent::class)->assertOk();
 

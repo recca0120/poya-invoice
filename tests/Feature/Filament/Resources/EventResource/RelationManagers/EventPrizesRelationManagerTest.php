@@ -17,7 +17,7 @@ class EventPrizesRelationManagerTest extends TestCase
 
     public function test_create_prizes(): void
     {
-        $this->givenSuperAdminUser();
+        $this->givenSuperAdmin();
 
         /** @var Event $event */
         $event = Event::factory()->createOne();
