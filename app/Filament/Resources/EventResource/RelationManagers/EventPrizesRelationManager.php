@@ -17,6 +17,10 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class EventPrizesRelationManager extends RelationManager
 {
+    protected $listeners = ['refreshRelation' => '$refresh'];
+
+    protected static bool $isLazy = false;
+
     protected static string $relationship = 'eventPrizes';
 
     public function form(Form $form): Form

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
+ * @property int $user_id
+ *
  * @mixin Builder
  */
 class EventUser extends Pivot

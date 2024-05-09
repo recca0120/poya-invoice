@@ -10,6 +10,8 @@ use App\Models\EventUser;
 use App\Models\EventWinner;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Livewire\Component;
+use Mockery as m;
 use Tests\Feature\Filament\Resources\HasLoginUser;
 use Tests\TestCase;
 
@@ -35,6 +37,7 @@ class DrawActionTest extends TestCase
         $this->givenUsers(1);
 
         $action = DrawAction::make('draw');
+        $action->livewire(m::spy(Component::class));
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::NO->value]]);
 
@@ -49,6 +52,7 @@ class DrawActionTest extends TestCase
         $this->givenUsers(4);
 
         $action = DrawAction::make('draw');
+        $action->livewire(m::spy(Component::class));
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::NO->value]]);
 
@@ -63,6 +67,7 @@ class DrawActionTest extends TestCase
         $this->givenUsers(1);
 
         $action = DrawAction::make('draw');
+        $action->livewire(m::spy(Component::class));
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::YES->value]]);
 
@@ -77,6 +82,7 @@ class DrawActionTest extends TestCase
         $this->givenUsers(2);
 
         $action = DrawAction::make('draw');
+        $action->livewire(m::spy(Component::class));
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::YES->value]]);
 

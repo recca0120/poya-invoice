@@ -13,10 +13,18 @@ class EditEvent extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DrawAction::make('draw'),
+            DrawAction::make(),
             // Actions\DeleteAction::make(),
             // Actions\ForceDeleteAction::make(),
             // Actions\RestoreAction::make(),
+        ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            ...parent::getFormActions(),
+            DrawAction::make(),
         ];
     }
 }
