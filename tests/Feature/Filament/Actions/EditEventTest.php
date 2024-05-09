@@ -26,7 +26,19 @@ class EditEventTest extends TestCase
 
         /** @var Event $event */
         $this->event = Event::factory()->createOne();
+    }
 
+    public function test_2_prizes_1_users(): void
+    {
+        $this->givenPrize(2);
+        $this->givenUsers(1);
+
+        $action = DrawAction::make('draw');
+        $action->record($this->event);
+        $action->call(['data' => ['repeat' => false]]);
+
+        $this->assertDatabaseCount('event_winners', 1);
+        $this->shouldBeRepeatWinners(false);
     }
 
     public function test_2_prizes_4_users(): void
