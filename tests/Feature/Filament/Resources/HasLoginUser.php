@@ -9,14 +9,19 @@ trait HasLoginUser
 {
     protected function givenSuperAdmin(): User
     {
-        return $this->givenUser('super_admin');
+        return $this->givenLoginUser('super_admin');
     }
 
-    private function givenUser($role): User
+    private function givenLoginUser($role): User
     {
         return tap(
-            User::factory()->role($role)->createOne(),
+            $this->givenUser($role),
             static fn (User $user) => Livewire::actingAs($user)
         );
+    }
+
+    private function givenUser($role, $attributes = []): User
+    {
+        return User::factory()->role($role)->createOne($attributes);
     }
 }
