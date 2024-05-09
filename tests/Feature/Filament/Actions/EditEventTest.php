@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Filament\Actions;
 
+use const true;
+
 use App\Filament\Actions\DrawAction;
 use App\Models\Event;
 use App\Models\EventPrize;
@@ -11,12 +13,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\Feature\Filament\Resources\HasLoginUser;
 use Tests\TestCase;
-use const true;
 
 class EditEventTest extends TestCase
 {
-    use LazilyRefreshDatabase;
     use HasLoginUser;
+    use LazilyRefreshDatabase;
 
     private Event $event;
 
@@ -98,8 +99,8 @@ class EditEventTest extends TestCase
         $winners = EventWinner::all()->pluck('user_id');
 
         self::assertEquals($expected, count(array_filter(
-                array_count_values($winners->toArray()),
-                static fn ($value) => $value > 1
-            )) > 0, $winners->toJson());
+            array_count_values($winners->toArray()),
+            static fn ($value) => $value > 1
+        )) > 0, $winners->toJson());
     }
 }

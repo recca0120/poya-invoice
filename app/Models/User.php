@@ -15,6 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property int $id
+ * @property string $name
  * @property string $member_card_number
  * @property string $phone_number
  *

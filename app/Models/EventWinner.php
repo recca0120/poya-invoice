@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
+ * @property Event $event
+ * @property EventPrize $eventPrize
+ * @property User $user
+ *
  * @mixin Builder
  */
 class EventWinner extends Pivot
