@@ -51,7 +51,7 @@ class DrawAction extends Action
                     $prize = $prizes->shift();
                     $prize->user_id = $users->random();
 
-                    if ($repeat) {
+                    if ($repeat === false) {
                         $users = $users->reject($prize->user_id);
                     }
 
