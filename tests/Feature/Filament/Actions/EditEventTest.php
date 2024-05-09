@@ -4,6 +4,7 @@ namespace Tests\Feature\Filament\Actions;
 
 use const true;
 
+use App\Enums\YesOrNo;
 use App\Filament\Actions\DrawAction;
 use App\Models\Event;
 use App\Models\EventPrize;
@@ -36,7 +37,7 @@ class EditEventTest extends TestCase
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => false]]);
+        $action->call(['data' => ['repeat' => YesOrNo::NO->value]]);
 
         $this->assertDatabaseCount('event_winner', 1);
         $this->shouldBeRepeatWinners(false);
@@ -49,7 +50,7 @@ class EditEventTest extends TestCase
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => false]]);
+        $action->call(['data' => ['repeat' => YesOrNo::NO->value]]);
 
         $this->assertDatabaseCount('event_winner', 2);
         $this->shouldBeRepeatWinners(false);
@@ -62,7 +63,7 @@ class EditEventTest extends TestCase
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => true]]);
+        $action->call(['data' => ['repeat' => YesOrNo::YES->value]]);
 
         $this->assertDatabaseCount('event_winner', 2);
         $this->shouldBeRepeatWinners(true);
@@ -75,7 +76,7 @@ class EditEventTest extends TestCase
 
         $action = DrawAction::make('draw');
         $action->record($this->event);
-        $action->call(['data' => ['repeat' => true]]);
+        $action->call(['data' => ['repeat' => YesOrNo::YES->value]]);
 
         $this->assertDatabaseCount('event_winner', 2);
     }

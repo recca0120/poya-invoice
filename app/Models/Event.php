@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\EventType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property EventType $type
  * @property Carbon $started_at
  * @property Carbon $ended_at
+ * @property bool $ended
  * @property Collection<int, EventPrize> $eventPrizes
  * @property Collection<int, EventUser> $eventUsers
  *
@@ -76,8 +78,10 @@ class Event extends Model implements HasMedia
         $this->addMediaConversion('background')->nonQueued();
     }
 
-    public function isEnd(): bool
+    protected function ended(): Attribute
     {
-        return $this->ended_at->lessThanOrEqualTo(now());
+        return Attribute::make(get: function () {
+            return $this->ended_at->lessThanOrEqualTo(now());
+        });
     }
 }

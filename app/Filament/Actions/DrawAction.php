@@ -21,7 +21,7 @@ class DrawAction extends Action
         $this->label('抽獎')
             ->icon('heroicon-o-gift')
             ->color(Color::Teal)
-            ->visible(fn (Event $record) => $record->isEnd())
+            ->visible(fn (Event $record) => $record->ended)
             ->form([
                 ToggleButtons::make('repeat')
                     ->label('同會員可重複中獎')
