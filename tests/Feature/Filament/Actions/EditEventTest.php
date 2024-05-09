@@ -67,6 +67,18 @@ class EditEventTest extends TestCase
         $this->shouldBeRepeatWinners(true);
     }
 
+    public function test_2_prizes_4_users_and_can_repeat_winner(): void
+    {
+        $this->givenPrize(2);
+        $this->givenUsers(4);
+
+        $action = DrawAction::make('draw');
+        $action->record($this->event);
+        $action->call(['data' => ['repeat' => true]]);
+
+        $this->assertDatabaseCount('event_winners', 2);
+    }
+
     private function givenUsers(int $count, bool $approved = true): Collection
     {
         $eventUserFactory = EventUser::factory()->state(['event_id' => $this->event->id]);
@@ -83,11 +95,11 @@ class EditEventTest extends TestCase
 
     private function shouldBeRepeatWinners(bool $expected): void
     {
-        $winners = EventWinner::all()->pluck('user_id')->toArray();
+        $winners = EventWinner::all()->pluck('user_id');
 
         self::assertEquals($expected, count(array_filter(
-                array_count_values($winners),
+                array_count_values($winners->toArray()),
                 static fn ($value) => $value > 1
-            )) > 0);
+            )) > 0, $winners->toJson());
     }
 }
