@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\EventPrize;
 use App\Models\EventWinner;
 use Filament\Actions\Action;
+use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,8 @@ use Illuminate\Support\Fluent;
 
 class DrawAction extends Action
 {
+    use CanCustomizeProcess;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,40 +33,57 @@ class DrawAction extends Action
                     ->inlineLabel(false)
                     ->default(YesOrNo::NO->value),
             ])
-            ->action(function (Event $record, array $data) {
-                $repeat = YesOrNo::from($data['repeat']);
+            ->requiresConfirmation(static fn (Event $record) => $record->drawn === true)
+            ->action(function (array $data) {
+                $this->process(function (Event $record) use ($data) {
+                    $repeat = YesOrNo::from($data['repeat']);
 
-                $users = $record
-                    ->eventUsers()
-                    ->where('approved', true)
-                    ->pluck('user_id');
+                    $users = $record
+                        ->eventUsers()
+                        ->where('approved', true)
+                        ->pluck('user_id');
 
-                $prizes = $record->eventPrizes->map(function (EventPrize $prize) {
-                    return collect(range(1, $prize->quantity))
-                        ->map(fn () => new Fluent([
-                            'event_prize_id' => $prize->id,
-                            'user_id' => null,
-                        ]));
-                })->collapse();
+                    $prizes = $record->eventPrizes
+                        ->map(fn (EventPrize $prize) => collect(range(1, $prize->quantity))->map(fn () => new Fluent([
+                            'event_prize_id' => $prize->id, 'user_id' => null,
+                        ])))
+                        ->collapse()
+                        ->shuffle();
 
-                DB::beginTransaction();
-                EventWinner::query()->toBase()->where('event_id', $record->id)->truncate();
-                while ($prizes->isNotEmpty() && $users->isNotEmpty()) {
-                    /** @var Fluent $prize */
-                    $prize = $prizes->shift();
-                    $prize->user_id = $users->random();
+                    EventWinner::query()->toBase()->where('event_id', $record->id)->truncate();
+                    while ($users->isNotEmpty()) {
+                        $drawablePrizes = $prizes->reject(fn (Fluent $prize) => $prize->user_id);
+                        /** @var Fluent $prize */
+                        $prize = $drawablePrizes->first();
 
-                    if ($repeat === YesOrNo::NO) {
-                        $users = $users->reject($prize->user_id);
+                        if (! $prize) {
+                            break;
+                        }
+
+                        $drawnUsers = $prizes->filter(fn (Fluent $tmp) => $tmp->id === $prize->id)->toArray();
+                        $prize->user_id = $users
+                            ->reject(fn (int $id) => in_array($id, $drawnUsers, true))
+                            ->random();
+
+                        if ($repeat === YesOrNo::NO) {
+                            $users = $users->reject($prize->user_id);
+                        }
                     }
+                    DB::beginTransaction();
+                    $prizes
+                        ->reject(fn (Fluent $prize) => ! $prize->user_id)
+                        ->unique(fn (Fluent $prize) => [$prize->event_prize_id, $prize->user_id])
+                        ->each(function (Fluent $prize) use ($record) {
+                            return EventWinner::create([
+                                'event_id' => $record->id,
+                                'event_prize_id' => $prize->event_prize_id,
+                                'user_id' => $prize->user_id,
+                            ]);
+                        });
+                    DB::commit();
+                });
 
-                    EventWinner::create([
-                        'event_id' => $record->id,
-                        'event_prize_id' => $prize->event_prize_id,
-                        'user_id' => $prize->user_id,
-                    ]);
-                }
-                DB::commit();
+                $this->success();
             });
     }
 }

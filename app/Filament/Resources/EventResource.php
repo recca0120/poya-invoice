@@ -67,7 +67,6 @@ class EventResource extends Resource
                                             ->collection('banner')
                                             ->required(),
                                     ]),
-
                                 Forms\Components\Section::make()
                                     ->heading('背景圖')
                                     ->schema([

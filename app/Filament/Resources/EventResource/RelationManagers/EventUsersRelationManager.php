@@ -11,6 +11,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method Event getOwnerRecord()
@@ -18,6 +19,11 @@ use Illuminate\Database\Eloquent\Builder;
 class EventUsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'eventUsers';
+
+    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    {
+        return $ownerRecord->eventUsers->where('approved', true)->count();
+    }
 
     public function form(Form $form): Form
     {

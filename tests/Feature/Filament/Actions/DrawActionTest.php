@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Filament\Actions;
 
-use const true;
-
 use App\Enums\YesOrNo;
 use App\Filament\Actions\DrawAction;
 use App\Models\Event;
@@ -15,7 +13,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\Feature\Filament\Resources\HasLoginUser;
 use Tests\TestCase;
 
-class EditEventTest extends TestCase
+class DrawActionTest extends TestCase
 {
     use HasLoginUser;
     use LazilyRefreshDatabase;
@@ -32,7 +30,8 @@ class EditEventTest extends TestCase
 
     public function test_2_prizes_1_users(): void
     {
-        $this->givenPrize(2);
+        $this->givenPrize(1);
+        $this->givenPrize(1);
         $this->givenUsers(1);
 
         $action = DrawAction::make('draw');
@@ -45,7 +44,8 @@ class EditEventTest extends TestCase
 
     public function test_2_prizes_4_users(): void
     {
-        $this->givenPrize(2);
+        $this->givenPrize(1);
+        $this->givenPrize(1);
         $this->givenUsers(4);
 
         $action = DrawAction::make('draw');
@@ -58,7 +58,8 @@ class EditEventTest extends TestCase
 
     public function test_2_prizes_1_users_and_can_repeat_winner(): void
     {
-        $this->givenPrize(2);
+        $this->givenPrize(1);
+        $this->givenPrize(1);
         $this->givenUsers(1);
 
         $action = DrawAction::make('draw');
@@ -71,7 +72,8 @@ class EditEventTest extends TestCase
 
     public function test_2_prizes_4_users_and_can_repeat_winner(): void
     {
-        $this->givenPrize(2);
+        $this->givenPrize(1);
+        $this->givenPrize(1);
         $this->givenUsers(4);
 
         $action = DrawAction::make('draw');

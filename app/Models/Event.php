@@ -22,8 +22,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon $started_at
  * @property Carbon $ended_at
  * @property bool $ended
+ * @property bool $drawn
  * @property Collection<int, EventPrize> $eventPrizes
  * @property Collection<int, EventUser> $eventUsers
+ * @property Collection<int, EventWinner> $eventWinners
  *
  * @mixin Builder
  */
@@ -82,6 +84,13 @@ class Event extends Model implements HasMedia
     {
         return Attribute::make(get: function () {
             return $this->ended_at->lessThanOrEqualTo(now());
+        });
+    }
+
+    protected function drawn(): Attribute
+    {
+        return Attribute::make(get: function () {
+            return $this->eventWinners()->exists();
         });
     }
 }
