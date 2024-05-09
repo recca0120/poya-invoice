@@ -31,7 +31,8 @@ class DrawAction extends Action
                     ->default(YesOrNo::NO->value),
             ])
             ->action(function (Event $record, array $data) {
-                $repeat = $data['repeat'];
+                $repeat = YesOrNo::from($data['repeat']);
+
                 $users = $record
                     ->eventUsers()
                     ->where('approved', true)
@@ -46,12 +47,13 @@ class DrawAction extends Action
                 })->collapse();
 
                 DB::beginTransaction();
+                EventWinner::query()->toBase()->where('event_id', $record->id)->truncate();
                 while ($prizes->isNotEmpty() && $users->isNotEmpty()) {
                     /** @var Fluent $prize */
                     $prize = $prizes->shift();
                     $prize->user_id = $users->random();
 
-                    if ($repeat === false) {
+                    if ($repeat === YesOrNo::NO) {
                         $users = $users->reject($prize->user_id);
                     }
 

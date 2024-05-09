@@ -37,7 +37,7 @@ class EditEventTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => false]]);
 
-        $this->assertDatabaseCount('event_winners', 1);
+        $this->assertDatabaseCount('event_winner', 1);
         $this->shouldBeRepeatWinners(false);
     }
 
@@ -50,7 +50,7 @@ class EditEventTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => false]]);
 
-        $this->assertDatabaseCount('event_winners', 2);
+        $this->assertDatabaseCount('event_winner', 2);
         $this->shouldBeRepeatWinners(false);
     }
 
@@ -63,7 +63,7 @@ class EditEventTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => true]]);
 
-        $this->assertDatabaseCount('event_winners', 2);
+        $this->assertDatabaseCount('event_winner', 2);
         $this->shouldBeRepeatWinners(true);
     }
 
@@ -76,7 +76,7 @@ class EditEventTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => true]]);
 
-        $this->assertDatabaseCount('event_winners', 2);
+        $this->assertDatabaseCount('event_winner', 2);
     }
 
     private function givenUsers(int $count, bool $approved = true): Collection
