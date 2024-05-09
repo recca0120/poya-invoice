@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EventResource\RelationManagers;
 
+use App\Filament\Tables\Actions\DrawAction;
 use App\Models\Event;
 use App\Models\EventPrize;
 use App\Models\EventWinner;
@@ -79,6 +80,7 @@ class EventPrizesRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                DrawAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

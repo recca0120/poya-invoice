@@ -22,8 +22,6 @@ class AuthControllerTest extends TestCase
             'password' => 'password',
         ])->assertOk();
 
-        $response->assertJsonStructure([
-            'data' => ['access_token', 'token_type'],
-        ]);
+        $response->assertJsonStructure(['access_token', 'token_type']);
     }
 }
