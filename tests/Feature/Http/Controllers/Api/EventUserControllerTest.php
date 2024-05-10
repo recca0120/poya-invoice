@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
+use App\Enums\EventType;
 use App\Models\Event;
 use App\Models\EventUser;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -17,11 +18,7 @@ class EventUserControllerTest extends TestCase
     {
         $sn = 'AB12345678';
         $user = $this->givenLoginUser();
-        /** @var Event $event */
-        $event = Event::factory()->createOne([
-            'started_at' => now(),
-            'ended_at' => now()->addWeek(),
-        ]);
+        $event = $this->givenEvent();
 
         $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
             ->assertCreated()
@@ -45,14 +42,43 @@ class EventUserControllerTest extends TestCase
         $sn = 'AB12345678';
 
         $this->givenLoginUser();
-        /** @var Event $event */
-        $event = Event::factory()->createOne([
-            'started_at' => now(),
-            'ended_at' => now()->addWeek(),
-        ]);
+        $event = $this->givenEvent();
         EventUser::factory()->for($event)->createOne(['sn' => $sn]);
 
         $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
-            ->assertJsonValidationErrorFor('sn');
+            ->assertJsonValidationErrors(['sn' => 'The sn has already been taken.']);
+    }
+
+    public function test_invalid_invoice(): void
+    {
+        $sn = '12345678';
+
+        $this->givenLoginUser();
+        $event = $this->givenEvent();
+        EventUser::factory()->for($event)->createOne(['sn' => $sn]);
+
+        $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
+            ->assertJsonValidationErrors(['sn' => 'The sn field format is invalid.']);
+    }
+
+    public function test_invalid_sn(): void
+    {
+        $sn = '12345678';
+
+        $this->givenLoginUser();
+        $event = $this->givenEvent(EventType::SN);
+        EventUser::factory()->for($event)->createOne(['sn' => $sn]);
+
+        $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
+            ->assertJsonValidationErrors(['sn' => 'The sn field format is invalid.']);
+    }
+
+    private function givenEvent($type = EventType::INVOICE): Event
+    {
+        return Event::factory()->createOne([
+            'type' => $type,
+            'started_at' => now(),
+            'ended_at' => now()->addWeek(),
+        ]);
     }
 }
