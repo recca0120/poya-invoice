@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\EventResource\RelationManagers;
 
+use App\Filament\Exports\EventWinnerExporter;
 use App\Filament\Tables\Actions\DrawAction;
 use App\Models\Event;
 use App\Models\EventPrize;
-use App\Models\EventWinner;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -43,20 +44,19 @@ class EventPrizesRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('name')
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('eventWinners.user'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('winners'))
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('quantity')->numeric(),
-                Tables\Columns\TextColumn::make('eventWinners')
+                Tables\Columns\TextColumn::make('winners')
                     ->listWithLineBreaks()
                     ->limitList(2)
                     ->expandableLimitedList()
                     ->bulleted()
                     ->html()
                     ->getStateUsing(function (EventPrize $record) {
-                        return $record->eventWinners
-                            ->map(function (EventWinner $eventWinner) {
-                                $user = $eventWinner->user;
+                        return $record->winners
+                            ->map(function (User $user) {
                                 $lookup = [
                                     '姓名' => $user->name,
                                     '會員卡號' => $user->member_code,
@@ -81,6 +81,20 @@ class EventPrizesRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
                 DrawAction::make(),
+                Tables\Actions\ExportAction::make()
+                    ->exporter(EventWinnerExporter::class)
+                    ->modifyQueryUsing(function (Builder $query) {
+                        return $query
+                            ->select('*')
+                            ->selectRaw('event_winner.user_id AS winner_id')
+                            ->with('winner')
+                            ->join(
+                                'event_winner',
+                                'event_prizes.id',
+                                '=',
+                                'event_winner.event_prize_id'
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -90,6 +104,7 @@ class EventPrizesRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('id');
     }
 }

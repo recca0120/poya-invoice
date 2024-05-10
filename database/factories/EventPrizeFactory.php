@@ -14,7 +14,7 @@ class EventPrizeFactory extends Factory
     {
         return [
             'event_id' => Event::factory(),
-            'name' => fake()->name(),
+            'name' => 'prize_'.fake()->uuid(),
             'quantity' => fake()->numberBetween(1, 10),
         ];
     }

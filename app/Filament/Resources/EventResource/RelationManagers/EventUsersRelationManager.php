@@ -22,6 +22,7 @@ class EventUsersRelationManager extends RelationManager
 
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
+        /** @var Event $ownerRecord */
         return $ownerRecord->eventUsers->where('approved', true)->count();
     }
 
@@ -65,7 +66,6 @@ class EventUsersRelationManager extends RelationManager
                 Tables\Actions\ImportAction::make()
                     ->importer(EventUserImporter::class)
                     ->options([
-                        'code_label' => $this->getOwnerRecord()->type->getColumnName(),
                         'event_id' => $this->getOwnerRecord()->id,
                     ]),
             ])

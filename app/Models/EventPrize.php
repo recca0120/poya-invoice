@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property numeric $quantity
  * @property Event $event
  * @property Collection<int, EventWinner> $eventWinners
+ * @property Collection<int, User> $winners
  *
  * @mixin Builder
  */
@@ -43,5 +45,18 @@ class EventPrize extends Model
     public function eventWinners(): HasMany
     {
         return $this->hasMany(EventWinner::class);
+    }
+
+    public function winners(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'event_winner'
+        )->using(EventWinner::class);
+    }
+
+    public function winner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'winner_id');
     }
 }
