@@ -45,4 +45,9 @@ class EventPrize extends Model
     {
         return $this->hasMany(EventWinner::class);
     }
+
+    public function winner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'winner_id');
+    }
 }

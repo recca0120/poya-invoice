@@ -45,7 +45,6 @@ class EventPrizesRelationManagerTest extends TestCase
 
     public function test_export_winners(): void
     {
-        $this->markTestSkipped('fix later');
         $this->givenSuperAdmin();
 
         /** @var Event $event */
@@ -62,5 +61,6 @@ class EventPrizesRelationManagerTest extends TestCase
         $testable->callMountedTableAction();
 
         $storage->assertExists('filament_exports/1/0000000000000001.csv');
+        // dump($storage->get('filament_exports/1/0000000000000001.csv'));
     }
 }

@@ -69,7 +69,16 @@ class EventPrizesRelationManager extends RelationManager
                 Tables\Actions\ExportAction::make()
                     ->exporter(EventWinnerExporter::class)
                     ->modifyQueryUsing(function (Builder $query) {
-                        return $query;
+                        return $query
+                            ->with('winner')
+                            ->select('*')
+                            ->selectRaw('user_id AS winner_id')
+                            ->join(
+                                'event_winner',
+                                'event_winner.event_prize_id',
+                                '=',
+                                'event_prizes.id'
+                            );
                     }),
             ])
             ->actions([
@@ -81,6 +90,6 @@ class EventPrizesRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('id');
+            ->defaultSort('event_prizes.id');
     }
 }
