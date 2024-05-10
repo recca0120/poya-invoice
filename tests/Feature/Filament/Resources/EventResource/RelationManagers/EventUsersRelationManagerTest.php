@@ -31,7 +31,7 @@ class EventUsersRelationManagerTest extends TestCase
 
         $data = [
             'user_id' => 1,
-            'sn' => fake()->uuid(),
+            'code' => fake()->uuid(),
             'approved' => true,
         ];
 
@@ -56,7 +56,7 @@ class EventUsersRelationManagerTest extends TestCase
             'ownerRecord' => $event, 'pageClass' => EditEvent::class,
         ])->assertOk();
 
-        $sn = fake()->uuid();
+        $code = fake()->uuid();
         $name = '王小明';
         $memberCode = fake()->creditCardNumber();
         $phoneNumber = fake()->phoneNumber();
@@ -67,9 +67,9 @@ class EventUsersRelationManagerTest extends TestCase
             'phone_number' => $phoneNumber,
         ]);
 
-        $headers = ['sn', 'name', 'member_code', 'phone_number', 'approved'];
+        $headers = ['code', 'name', 'member_code', 'phone_number', 'approved'];
         $data = [
-            [$sn, $name, $memberCode, $phoneNumber, 1],
+            [$code, $name, $memberCode, $phoneNumber, 1],
         ];
 
         $csv = $this->createCsv($headers, $data);
@@ -82,7 +82,7 @@ class EventUsersRelationManagerTest extends TestCase
         $this->assertDatabaseHas('event_user', [
             'event_id' => $event->id,
             'user_id' => $user->id,
-            'sn' => $sn,
+            'code' => $code,
             'approved' => 1,
         ]);
     }
@@ -98,14 +98,14 @@ class EventUsersRelationManagerTest extends TestCase
             'ownerRecord' => $event, 'pageClass' => EditEvent::class,
         ])->assertOk();
 
-        $sn = fake()->uuid();
+        $code = fake()->uuid();
         $name = '王小明';
         $memberCode = fake()->creditCardNumber();
         $phoneNumber = fake()->phoneNumber();
 
         $headers = ['name', '發票號碼或活動序號', 'member_code', 'phone_number', 'approved'];
         $data = [
-            [$name, $sn, $memberCode, $phoneNumber, '是'],
+            [$name, $code, $memberCode, $phoneNumber, '是'],
         ];
 
         $csv = $this->createCsv($headers, $data);
@@ -117,7 +117,7 @@ class EventUsersRelationManagerTest extends TestCase
 
         $this->assertDatabaseHas('event_user', [
             'event_id' => $event->id,
-            'sn' => $sn,
+            'code' => $code,
             'approved' => 1,
         ]);
 

@@ -16,9 +16,9 @@ class EventUserImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('sn')
+            ImportColumn::make('code')
                 ->label('發票號碼或活動序號')
-                ->guess(['發票號碼或活動序號', 'sn'])
+                ->guess(['發票號碼或活動序號', 'code'])
                 ->requiredMapping()
                 ->exampleHeader('發票號碼或活動序號')
                 ->example('AB12345678')

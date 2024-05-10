@@ -34,7 +34,7 @@ class EventUsersRelationManager extends RelationManager
                     ->relationship(name: 'user', titleAttribute: 'name')
                     ->searchable()
                     ->required(),
-                Forms\Components\TextInput::make('sn')
+                Forms\Components\TextInput::make('code')
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord()))
                     ->required(),
                 Forms\Components\ToggleButtons::make('approved')
@@ -53,7 +53,7 @@ class EventUsersRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('user.name')->label('姓名'),
                 Tables\Columns\TextColumn::make('user.member_code')->label('會員卡號'),
                 Tables\Columns\TextColumn::make('user.phone_number')->label('手機號碼'),
-                Tables\Columns\TextColumn::make('sn')
+                Tables\Columns\TextColumn::make('code')
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord())),
                 Tables\Columns\ToggleColumn::make('approved'),
             ])
@@ -65,7 +65,7 @@ class EventUsersRelationManager extends RelationManager
                 Tables\Actions\ImportAction::make()
                     ->importer(EventUserImporter::class)
                     ->options([
-                        'sn_label' => $this->getOwnerRecord()->type->getColumnName(),
+                        'code_label' => $this->getOwnerRecord()->type->getColumnName(),
                         'event_id' => $this->getOwnerRecord()->id,
                     ]),
             ])

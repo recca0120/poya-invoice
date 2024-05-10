@@ -16,7 +16,7 @@ class EventUserFactory extends Factory
         return [
             'event_id' => Event::factory(),
             'user_id' => User::factory(),
-            'sn' => fake()->uuid(),
+            'code' => fake()->uuid(),
             'approved' => fake()->boolean(),
         ];
     }

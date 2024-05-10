@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->index();
             $table->foreignId('user_id')->index();
-            $table->string('sn');
+            $table->string('code');
             $table->boolean('approved')->default(true);
             $table->timestamps();
         });

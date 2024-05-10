@@ -16,61 +16,61 @@ class EventUserControllerTest extends TestCase
 
     public function test_create_invoice(): void
     {
-        $sn = 'AB12345678';
+        $code = 'AB12345678';
         $user = $this->givenLoginUser();
         $event = $this->givenEvent();
 
-        $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
+        $this->postJson('/api/event/'.$event->id, ['code' => $code])
             ->assertCreated()
             ->assertJson([
                 'data' => [
                     'event_id' => $event->id,
                     'user_id' => $user->id,
-                    'sn' => $sn,
+                    'code' => $code,
                 ],
             ]);
 
         $this->assertDatabaseHas('event_user', [
             'event_id' => $event->id,
             'user_id' => $user->id,
-            'sn' => $sn,
+            'code' => $code,
         ]);
     }
 
     public function test_can_not_send_same_sn(): void
     {
-        $sn = 'AB12345678';
+        $code = 'AB12345678';
 
         $this->givenLoginUser();
         $event = $this->givenEvent();
-        EventUser::factory()->for($event)->createOne(['sn' => $sn]);
+        EventUser::factory()->for($event)->createOne(['code' => $code]);
 
-        $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
-            ->assertJsonValidationErrors(['sn' => 'The sn has already been taken.']);
+        $this->postJson('/api/event/'.$event->id, ['code' => $code])
+            ->assertJsonValidationErrors(['code' => 'The code has already been taken.']);
     }
 
     public function test_invalid_invoice(): void
     {
-        $sn = '12345678';
+        $code = '12345678';
 
         $this->givenLoginUser();
         $event = $this->givenEvent();
-        EventUser::factory()->for($event)->createOne(['sn' => $sn]);
+        EventUser::factory()->for($event)->createOne(['code' => $code]);
 
-        $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
-            ->assertJsonValidationErrors(['sn' => 'The sn field format is invalid.']);
+        $this->postJson('/api/event/'.$event->id, ['code' => $code])
+            ->assertJsonValidationErrors(['code' => 'The code field format is invalid.']);
     }
 
     public function test_invalid_sn(): void
     {
-        $sn = '12345678';
+        $code = '12345678';
 
         $this->givenLoginUser();
         $event = $this->givenEvent(EventType::SN);
-        EventUser::factory()->for($event)->createOne(['sn' => $sn]);
+        EventUser::factory()->for($event)->createOne(['code' => $code]);
 
-        $this->postJson('/api/event/'.$event->id, ['sn' => $sn])
-            ->assertJsonValidationErrors(['sn' => 'The sn field format is invalid.']);
+        $this->postJson('/api/event/'.$event->id, ['code' => $code])
+            ->assertJsonValidationErrors(['code' => 'The code field format is invalid.']);
     }
 
     private function givenEvent($type = EventType::INVOICE): Event

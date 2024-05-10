@@ -21,18 +21,18 @@ class EventUserController extends Controller
             ->sole();
 
         $validated = $request->validate([
-            'sn' => [
+            'code' => [
                 'string',
                 'required',
                 new EventRule($event->type),
-                Rule::unique('event_user', 'sn')
+                Rule::unique('event_user', 'code')
                     ->where('event_id', $eventId),
             ],
         ]);
 
         return JsonResource::make($event->eventUsers()->create([
             'user_id' => $request->user()->id,
-            'sn' => $validated['sn'],
+            'code' => $validated['code'],
         ]));
     }
 }

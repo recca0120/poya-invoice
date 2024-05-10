@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property int $user_id
+ * @property string $code
  *
  * @mixin Builder
  */
@@ -19,7 +20,7 @@ class EventUser extends Pivot
     protected $fillable = [
         'user_id',
         'event_id',
-        'sn',
+        'code',
         'approved',
     ];
 
