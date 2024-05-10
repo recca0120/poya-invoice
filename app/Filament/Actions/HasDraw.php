@@ -73,14 +73,14 @@ trait HasDraw
 
     private function draw(Event $event, Collection $prizes): Collection
     {
-        $availableUsers = $event
+        $randomUsers = $event
             ->eventUsers()
             ->where('approved', true)
             ->inRandomOrder()
             ->take($prizes->count())
             ->get();
 
-        return $availableUsers
+        return $randomUsers
             ->map(function (EventUser $eventUser, int $index) use ($prizes) {
                 $prize = $prizes->get($index);
                 $prize->user_id = $eventUser->user_id;

@@ -30,9 +30,9 @@ class EventUserImporter extends Importer
                 ->exampleHeader('姓名')
                 ->example('王小明')
                 ->fillRecordUsing(fn () => null),
-            ImportColumn::make('member_card_number')
+            ImportColumn::make('member_code')
                 ->label('會員卡號')
-                ->guess(['會員卡號', 'member_card_number'])
+                ->guess(['會員卡號', 'member_code'])
                 ->requiredMapping()
                 ->exampleHeader('會員卡號')
                 ->example('2770000000000')
@@ -69,15 +69,15 @@ class EventUserImporter extends Importer
         //     'email' => $this->data['email'],
         // ]);
         $name = $this->data['name'];
-        $memberCardNumber = $this->data['member_card_number'];
+        $memberCode = $this->data['member_code'];
         $phoneNumber = $this->data['phone_number'];
 
         /** @var User $user */
-        $user = User::createOrFirst(['member_card_number' => $memberCardNumber], [
-            'member_card_number' => $memberCardNumber,
+        $user = User::createOrFirst(['member_code' => $memberCode], [
+            'member_code' => $memberCode,
             'phone_number' => $phoneNumber,
             'name' => $name,
-            'email' => $memberCardNumber.'@fake-poya.com.tw',
+            'email' => $memberCode.'@fake.com.tw',
             'password' => Str::random(32),
         ]);
 

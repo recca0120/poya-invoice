@@ -59,7 +59,7 @@ class EventPrizesRelationManager extends RelationManager
                                 $user = $eventWinner->user;
                                 $lookup = [
                                     '姓名' => $user->name,
-                                    '會員卡號' => $user->member_card_number,
+                                    '會員卡號' => $user->member_code,
                                     '電話號碼' => $user->phone_number,
                                 ];
 

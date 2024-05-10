@@ -58,18 +58,18 @@ class EventUsersRelationManagerTest extends TestCase
 
         $sn = fake()->uuid();
         $name = '王小明';
-        $memberCardNumber = fake()->creditCardNumber();
+        $memberCode = fake()->creditCardNumber();
         $phoneNumber = fake()->phoneNumber();
 
         /** @var User $user */
         $user = User::factory()->createOne([
-            'member_card_number' => $memberCardNumber,
+            'member_code' => $memberCode,
             'phone_number' => $phoneNumber,
         ]);
 
-        $headers = ['sn', 'name', 'member_card_number', 'phone_number', 'approved'];
+        $headers = ['sn', 'name', 'member_code', 'phone_number', 'approved'];
         $data = [
-            [$sn, $name, $memberCardNumber, $phoneNumber, 1],
+            [$sn, $name, $memberCode, $phoneNumber, 1],
         ];
 
         $csv = $this->createCsv($headers, $data);
@@ -100,12 +100,12 @@ class EventUsersRelationManagerTest extends TestCase
 
         $sn = fake()->uuid();
         $name = '王小明';
-        $memberCardNumber = fake()->creditCardNumber();
+        $memberCode = fake()->creditCardNumber();
         $phoneNumber = fake()->phoneNumber();
 
-        $headers = ['name', '發票號碼或活動序號', 'member_card_number', 'phone_number', 'approved'];
+        $headers = ['name', '發票號碼或活動序號', 'member_code', 'phone_number', 'approved'];
         $data = [
-            [$name, $sn, $memberCardNumber, $phoneNumber, '是'],
+            [$name, $sn, $memberCode, $phoneNumber, '是'],
         ];
 
         $csv = $this->createCsv($headers, $data);

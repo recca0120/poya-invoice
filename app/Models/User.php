@@ -17,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * @property int $id
  * @property string $name
- * @property string $member_card_number
+ * @property string $member_code
  * @property string $phone_number
  * @property string $email
  *
@@ -38,7 +38,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
-        'member_card_number',
+        'member_code',
         'phone_number',
     ];
 
