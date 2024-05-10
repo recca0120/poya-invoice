@@ -44,8 +44,12 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function role($name, $guard = 'web'): self
+    public function role(?string $name = '', string $guard = 'web'): self
     {
+        if (! $name) {
+            return $this;
+        }
+
         $role = Role::createOrFirst(['name' => $name, 'guard_name' => $guard]);
 
         return $this->afterCreating(fn (User $user) => $user->assignRole($role));

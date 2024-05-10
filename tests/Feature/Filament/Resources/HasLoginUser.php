@@ -12,7 +12,7 @@ trait HasLoginUser
         return $this->givenLoginUser('super_admin');
     }
 
-    private function givenLoginUser($role): User
+    private function givenLoginUser(?string $role = ''): User
     {
         return tap(
             $this->givenUser($role),
@@ -20,7 +20,7 @@ trait HasLoginUser
         );
     }
 
-    private function givenUser($role, $attributes = []): User
+    private function givenUser(?string $role = '', array $attributes = []): User
     {
         return User::factory()->role($role)->createOne($attributes);
     }
