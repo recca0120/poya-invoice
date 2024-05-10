@@ -42,7 +42,7 @@ class EventUsersRelationManagerTest extends TestCase
             ->callMountedTableAction()
             ->assertHasNoTableActionErrors();
 
-        $this->assertDatabaseHas('event_user', $data);
+        $this->assertDatabaseHas('event_users', $data);
     }
 
     public function test_import_exist_user_to_event_user_from_csv(): void
@@ -79,7 +79,7 @@ class EventUsersRelationManagerTest extends TestCase
             ->callMountedTableAction()
             ->assertHasNoTableActionErrors();
 
-        $this->assertDatabaseHas('event_user', [
+        $this->assertDatabaseHas('event_users', [
             'event_id' => $event->id,
             'user_id' => $user->id,
             'code' => $code,
@@ -115,7 +115,7 @@ class EventUsersRelationManagerTest extends TestCase
             ->callMountedTableAction()
             ->assertHasNoTableActionErrors();
 
-        $this->assertDatabaseHas('event_user', [
+        $this->assertDatabaseHas('event_users', [
             'event_id' => $event->id,
             'code' => $code,
             'approved' => 1,

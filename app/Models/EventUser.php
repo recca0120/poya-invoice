@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property int $id
  * @property int $user_id
  * @property string $code
+ * @property User $user
  *
  * @mixin Builder
  */
-class EventUser extends Pivot
+class EventUser extends Model
 {
     use HasFactory;
 

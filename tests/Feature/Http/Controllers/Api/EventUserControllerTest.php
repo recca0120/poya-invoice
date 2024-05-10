@@ -30,7 +30,7 @@ class EventUserControllerTest extends TestCase
                 ],
             ]);
 
-        $this->assertDatabaseHas('event_user', [
+        $this->assertDatabaseHas('event_users', [
             'event_id' => $event->id,
             'user_id' => $user->id,
             'code' => $code,

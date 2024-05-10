@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\EventPrize;
+use App\Models\EventUser;
 use App\Models\EventWinner;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EventWinnerFactory extends Factory
@@ -15,7 +15,7 @@ class EventWinnerFactory extends Factory
     {
         return [
             'event_prize_id' => EventPrize::factory(),
-            'user_id' => User::factory(),
+            'event_user_id' => EventUser::factory(),
         ];
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_user', function (Blueprint $table) {
+        Schema::create('event_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->index();
             $table->foreignId('user_id')->index();

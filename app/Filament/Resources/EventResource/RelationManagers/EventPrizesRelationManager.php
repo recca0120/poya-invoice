@@ -6,7 +6,7 @@ use App\Filament\Exports\EventWinnerExporter;
 use App\Filament\Tables\Actions\DrawAction;
 use App\Models\Event;
 use App\Models\EventPrize;
-use App\Models\User;
+use App\Models\EventWinner;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -44,7 +44,7 @@ class EventPrizesRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('name')
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('winners'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('eventWinners.eventUser.user'))
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('quantity')->numeric(),
@@ -55,24 +55,9 @@ class EventPrizesRelationManager extends RelationManager
                     ->bulleted()
                     ->html()
                     ->getStateUsing(function (EventPrize $record) {
-                        return $record->winners
-                            ->map(function (User $user) {
-                                $lookup = [
-                                    '姓名' => $user->name,
-                                    '會員卡號' => $user->member_code,
-                                    '電話號碼' => $user->phone_number,
-                                ];
-
-                                return implode('<br />', array_reduce(
-                                    array_keys($lookup),
-                                    static function (array $carry, string $key) use ($lookup) {
-                                        $value = $lookup[$key];
-
-                                        return $value ? [...$carry, $key.': '.$value] : $carry;
-                                    },
-                                    []
-                                ));
-                            });
+                        return $record->eventWinners->map(function (EventWinner $eventWinner) {
+                            return $eventWinner->eventUser->user->toWinnerString();
+                        });
                     }),
             ])
             ->filters([
@@ -84,16 +69,7 @@ class EventPrizesRelationManager extends RelationManager
                 Tables\Actions\ExportAction::make()
                     ->exporter(EventWinnerExporter::class)
                     ->modifyQueryUsing(function (Builder $query) {
-                        return $query
-                            ->select('*')
-                            ->selectRaw('event_winner.user_id AS winner_id')
-                            ->with('winner')
-                            ->join(
-                                'event_winner',
-                                'event_prizes.id',
-                                '=',
-                                'event_winner.event_prize_id'
-                            );
+                        return $query;
                     }),
             ])
             ->actions([

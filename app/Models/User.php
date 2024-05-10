@@ -69,4 +69,23 @@ class User extends Authenticatable implements FilamentUser
     {
         return true;
     }
+
+    public function toWinnerString(): string
+    {
+        $lookup = [
+            '姓名' => $this->name,
+            '會員卡號' => $this->member_code,
+            '電話號碼' => $this->phone_number,
+        ];
+
+        return implode('<br />', array_reduce(
+            array_keys($lookup),
+            static function (array $carry, string $key) use ($lookup) {
+                $value = $lookup[$key];
+
+                return $value ? [...$carry, $key.': '.$value] : $carry;
+            },
+            []
+        ));
+    }
 }

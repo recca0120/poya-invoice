@@ -25,7 +25,7 @@ class EventUserController extends Controller
                 'string',
                 'required',
                 new EventRule($event->type),
-                Rule::unique('event_user', 'code')
+                Rule::unique('event_users', 'code')
                     ->where('event_id', $eventId),
             ],
         ]);
