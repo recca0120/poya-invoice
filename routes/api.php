@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->prefix('/user')
         ->group(function () {
             Route::get('/profile', 'profile');
+            Route::get('/event', 'event');
         });
 
     Route::controller(EventController::class)

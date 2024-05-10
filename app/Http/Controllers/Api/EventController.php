@@ -16,7 +16,7 @@ class EventController extends Controller
                 ->where('started_at', '<=', now())
                 ->where('ended_at', '>=', now())
                 ->orderByDesc('started_at')
-                ->orderByDesc('id')
+                ->orderByDesc('name')
                 ->get()
         );
     }
