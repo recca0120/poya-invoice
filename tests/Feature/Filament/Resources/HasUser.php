@@ -5,7 +5,7 @@ namespace Tests\Feature\Filament\Resources;
 use App\Models\User;
 use Livewire\Livewire;
 
-trait HasLoginUser
+trait HasUser
 {
     protected function givenSuperAdmin(): User
     {

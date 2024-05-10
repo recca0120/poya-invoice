@@ -7,12 +7,12 @@ use App\Filament\Resources\EventResource\RelationManagers\EventPrizesRelationMan
 use App\Models\Event;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;
-use Tests\Feature\Filament\Resources\HasLoginUser;
+use Tests\Feature\Filament\Resources\HasUser;
 use Tests\TestCase;
 
 class EventPrizesRelationManagerTest extends TestCase
 {
-    use HasLoginUser;
+    use HasUser;
     use LazilyRefreshDatabase;
 
     public function test_create_prizes(): void

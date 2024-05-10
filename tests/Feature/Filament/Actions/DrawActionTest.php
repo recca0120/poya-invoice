@@ -12,12 +12,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Component;
 use Mockery as m;
-use Tests\Feature\Filament\Resources\HasLoginUser;
+use Tests\Feature\Filament\Resources\HasUser;
 use Tests\TestCase;
 
 class DrawActionTest extends TestCase
 {
-    use HasLoginUser;
+    use HasUser;
     use LazilyRefreshDatabase;
 
     private Event $event;

@@ -14,7 +14,7 @@ use Tests\TestCase;
 
 class EventResourceTest extends TestCase
 {
-    use HasLoginUser;
+    use HasUser;
     use LazilyRefreshDatabase;
 
     public function test_create_invoice_event(): void

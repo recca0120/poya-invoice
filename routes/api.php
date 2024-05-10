@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\EventUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +17,11 @@ Route::middleware('auth:sanctum')->group(function () {
         ->prefix('/event')
         ->group(function () {
             Route::get('/', 'index');
+        });
+
+    Route::controller(EventUserController::class)
+        ->prefix('/event/{event_id}')
+        ->group(function () {
+            Route::post('/', 'create');
         });
 });

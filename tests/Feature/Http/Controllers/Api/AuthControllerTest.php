@@ -3,12 +3,12 @@
 namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Tests\Feature\Filament\Resources\HasLoginUser;
+use Tests\Feature\Filament\Resources\HasUser;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
-    use HasLoginUser;
+    use HasUser;
     use LazilyRefreshDatabase;
 
     public function test_login(): void

@@ -10,12 +10,12 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Testing\File;
 use Illuminate\Http\UploadedFile;
 use Livewire\Livewire;
-use Tests\Feature\Filament\Resources\HasLoginUser;
+use Tests\Feature\Filament\Resources\HasUser;
 use Tests\TestCase;
 
 class EventUsersRelationManagerTest extends TestCase
 {
-    use HasLoginUser;
+    use HasUser;
     use LazilyRefreshDatabase;
 
     public function test_create_new_user(): void

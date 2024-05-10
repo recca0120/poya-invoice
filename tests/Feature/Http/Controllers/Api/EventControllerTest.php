@@ -4,12 +4,12 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Models\Event;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Tests\Feature\Filament\Resources\HasLoginUser;
+use Tests\Feature\Filament\Resources\HasUser;
 use Tests\TestCase;
 
 class EventControllerTest extends TestCase
 {
-    use HasLoginUser;
+    use HasUser;
     use LazilyRefreshDatabase;
 
     public function test_list_available_events(): void
