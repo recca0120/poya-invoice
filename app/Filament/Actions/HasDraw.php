@@ -51,7 +51,10 @@ trait HasDraw
             ->get()
             ->map(function (EventPrize $prize) {
                 return collect(range(1, $prize->quantity))->map(function () use ($prize) {
-                    return new Fluent(['event_prize_id' => $prize->id, 'user_id' => null]);
+                    return new Fluent([
+                        'event_prize_id' => $prize->id,
+                        'event_user_id' => null,
+                    ]);
                 });
             });
 
@@ -62,10 +65,10 @@ trait HasDraw
             : $this->draw($record, $prizes->collapse()->shuffle());
 
         $prizes
-            ->reject(fn ($prize) => ! $prize->user_id)
+            ->reject(fn ($prize) => ! $prize->event_user_id)
             ->each(fn ($prize) => EventWinner::create([
                 'event_prize_id' => $prize->event_prize_id,
-                'user_id' => $prize->user_id,
+                'event_user_id' => $prize->event_user_id,
             ]));
 
         return true;
@@ -83,7 +86,7 @@ trait HasDraw
         return $randomUsers
             ->map(function (EventUser $eventUser, int $index) use ($prizes) {
                 $prize = $prizes->get($index);
-                $prize->user_id = $eventUser->user_id;
+                $prize->event_user_id = $eventUser->id;
 
                 return $prize;
             });

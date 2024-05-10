@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('event_winner', function (Blueprint $table) {
             $table->foreignId('event_prize_id')->index();
-            $table->foreignId('user_id')->index();
+            $table->foreignId('event_user_id')->index();
             $table->timestamps();
         });
     }

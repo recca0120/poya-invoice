@@ -105,7 +105,7 @@ class DrawActionTest extends TestCase
 
     private function shouldBeRepeatWinners(bool $expected): void
     {
-        $winners = EventWinner::all()->pluck('user_id');
+        $winners = EventWinner::all()->pluck('event_user_id');
 
         self::assertEquals($expected, count(array_filter(
             array_count_values($winners->toArray()),

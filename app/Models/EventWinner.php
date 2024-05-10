@@ -21,6 +21,7 @@ class EventWinner extends Pivot
 
     protected $fillable = [
         'event_prize_id',
+        'event_user_id',
         'user_id',
     ];
 
