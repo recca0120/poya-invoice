@@ -108,8 +108,8 @@ class DrawActionTest extends TestCase
         $winners = EventWinner::all()->pluck('event_user_id');
 
         self::assertEquals($expected, count(array_filter(
-                array_count_values($winners->toArray()),
-                static fn ($value) => $value > 1
-            )) > 0, $winners->toJson());
+            array_count_values($winners->toArray()),
+            static fn ($value) => $value > 1
+        )) > 0, $winners->toJson());
     }
 }

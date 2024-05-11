@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\EventWinner;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Tests\Feature\Filament\Resources\HasUser;
 use Tests\TestCase;
@@ -45,12 +46,14 @@ class EventPrizesRelationManagerTest extends TestCase
 
     public function test_export_winners(): void
     {
-        $this->markTestSkipped();
         $this->givenSuperAdmin();
 
         /** @var Event $event */
         $event = Event::factory()->createOne();
-        EventWinner::factory()->recycle($event)->count(5)->create();
+        $eventWinners = EventWinner::factory()
+            ->recycle($event)
+            ->count(5)
+            ->create();
 
         $testable = Livewire::test(EventPrizesRelationManager::class, [
             'ownerRecord' => $event, 'pageClass' => EditEvent::class,
@@ -62,6 +65,25 @@ class EventPrizesRelationManagerTest extends TestCase
         $testable->callMountedTableAction();
 
         $storage->assertExists('filament_exports/1/0000000000000001.csv');
-        // dump($storage->get('filament_exports/1/0000000000000001.csv'));
+
+        $data = Str::of($storage->get('filament_exports/1/0000000000000001.csv'))
+            ->explode("\n")
+            ->map(fn (string $line) => str_getcsv($line))
+            ->first();
+
+        $eventWinner = $eventWinners->first();
+        $eventUser = $eventWinner->eventUser;
+        $eventPrize = $eventWinner->eventPrize;
+        $event = $eventUser->event;
+        $user = $eventUser->user;
+
+        $this->assertEquals([
+            $event->name,
+            $eventUser->code,
+            $eventPrize->name,
+            $user->name,
+            $user->member_code,
+            $user->phone_number,
+        ], $data);
     }
 }

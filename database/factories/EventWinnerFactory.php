@@ -12,6 +12,14 @@ class EventWinnerFactory extends Factory
 {
     protected $model = EventWinner::class;
 
+    public function configure()
+    {
+        return $this->afterCreating(function (EventWinner $eventWinner) {
+            $eventWinner->user_id = $eventWinner->eventUser->user_id;
+            $eventWinner->saveQuietly();
+        });
+    }
+
     public function definition(): array
     {
         $userFactory = User::factory();

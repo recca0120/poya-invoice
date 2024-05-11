@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $user_id
  * @property string $code
+ * @property Event $event
  * @property User $user
  *
  * @mixin Builder

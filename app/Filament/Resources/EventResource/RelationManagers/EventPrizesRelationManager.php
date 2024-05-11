@@ -69,16 +69,12 @@ class EventPrizesRelationManager extends RelationManager
                 Tables\Actions\ExportAction::make()
                     ->exporter(EventWinnerExporter::class)
                     ->modifyQueryUsing(function (Builder $query) {
-                        return $query
-                            ->with('winner')
-                            ->select('*')
-                            ->selectRaw('user_id AS winner_id')
-                            ->join(
-                                'event_winners',
-                                'event_winners.event_prize_id',
-                                '=',
-                                'event_prizes.id'
-                            );
+                        return $query->whereRelation(
+                            'eventUser',
+                            'event_id',
+                            '=',
+                            $this->getOwnerRecord()->id
+                        );
                     }),
             ])
             ->actions([
