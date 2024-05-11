@@ -67,7 +67,10 @@ class EventPrizesRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
                 DrawAction::make(),
                 Tables\Actions\ExportAction::make()
+                    ->label('匯出中獎名單')
+                    ->color('info')
                     ->exporter(EventWinnerExporter::class)
+                    ->visible($this->getOwnerRecord()->drawn)
                     ->modifyQueryUsing(function (Builder $query) {
                         return $query->whereRelation(
                             'eventUser',

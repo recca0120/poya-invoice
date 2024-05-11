@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_user_id')->index();
             $table->foreignId('event_prize_id')->index();
-            $table->foreignId('user_id')->index();
             $table->timestamps();
         });
     }

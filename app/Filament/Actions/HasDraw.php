@@ -54,7 +54,6 @@ trait HasDraw
                     return new Fluent([
                         'event_prize_id' => $prize->id,
                         'event_user_id' => null,
-                        'user_id' => null,
                     ]);
                 });
             });
@@ -70,7 +69,6 @@ trait HasDraw
             ->each(fn ($prize) => EventWinner::create([
                 'event_prize_id' => $prize->event_prize_id,
                 'event_user_id' => $prize->event_user_id,
-                'user_id' => $prize->user_id,
             ]));
 
         return true;
@@ -89,7 +87,6 @@ trait HasDraw
             ->map(function (EventUser $eventUser, int $index) use ($prizes) {
                 $prize = $prizes->get($index);
                 $prize->event_user_id = $eventUser->id;
-                $prize->user_id = $eventUser->user_id;
 
                 return $prize;
             });

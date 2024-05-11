@@ -20,7 +20,6 @@ class EventWinner extends Model
     protected $fillable = [
         'event_user_id',
         'event_prize_id',
-        'user_id',
     ];
 
     public function eventPrize(): BelongsTo
