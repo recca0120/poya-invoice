@@ -41,7 +41,7 @@ class DrawActionTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::NO->value]]);
 
-        $this->assertDatabaseCount('event_winner', 1);
+        $this->assertDatabaseCount('event_winners', 1);
         $this->shouldBeRepeatWinners(false);
     }
 
@@ -56,7 +56,7 @@ class DrawActionTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::NO->value]]);
 
-        $this->assertDatabaseCount('event_winner', 2);
+        $this->assertDatabaseCount('event_winners', 2);
         $this->shouldBeRepeatWinners(false);
     }
 
@@ -71,7 +71,7 @@ class DrawActionTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::YES->value]]);
 
-        $this->assertDatabaseCount('event_winner', 2);
+        $this->assertDatabaseCount('event_winners', 2);
         $this->shouldBeRepeatWinners(true);
     }
 
@@ -86,7 +86,7 @@ class DrawActionTest extends TestCase
         $action->record($this->event);
         $action->call(['data' => ['repeat' => YesNo::YES->value]]);
 
-        $this->assertDatabaseCount('event_winner', 4);
+        $this->assertDatabaseCount('event_winners', 4);
     }
 
     private function givenUsers(int $count, bool $approved = true): Collection
@@ -108,8 +108,8 @@ class DrawActionTest extends TestCase
         $winners = EventWinner::all()->pluck('event_user_id');
 
         self::assertEquals($expected, count(array_filter(
-            array_count_values($winners->toArray()),
-            static fn ($value) => $value > 1
-        )) > 0, $winners->toJson());
+                array_count_values($winners->toArray()),
+                static fn ($value) => $value > 1
+            )) > 0, $winners->toJson());
     }
 }

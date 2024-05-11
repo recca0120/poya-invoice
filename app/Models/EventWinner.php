@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property EventPrize $eventPrize
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  *
  * @mixin Builder
  */
-class EventWinner extends Pivot
+class EventWinner extends Model
 {
     use HasFactory;
 

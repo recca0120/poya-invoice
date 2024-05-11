@@ -74,8 +74,8 @@ class EventPrizesRelationManager extends RelationManager
                             ->select('*')
                             ->selectRaw('user_id AS winner_id')
                             ->join(
-                                'event_winner',
-                                'event_winner.event_prize_id',
+                                'event_winners',
+                                'event_winners.event_prize_id',
                                 '=',
                                 'event_prizes.id'
                             );
