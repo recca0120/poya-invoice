@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\EventType;
 use Carbon\Carbon;
+use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,6 +29,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Collection<int, EventPrize> $eventPrizes
  * @property Collection<int, EventUser> $eventUsers
  * @property Collection<int, EventWinner> $eventWinners
+ *
+ * @method static EventFactory factory($count = null, $state = [])
  *
  * @mixin Builder
  */
@@ -93,6 +96,20 @@ class Event extends Model implements HasMedia
     {
         return Attribute::make(get: function () {
             return $this->eventWinners()->exists();
+        });
+    }
+
+    protected function banner(): Attribute
+    {
+        return Attribute::make(get: function () {
+            return $this->getFirstMediaUrl('banner');
+        });
+    }
+
+    protected function background(): Attribute
+    {
+        return Attribute::make(get: function () {
+            return $this->getFirstMediaUrl('background');
         });
     }
 }

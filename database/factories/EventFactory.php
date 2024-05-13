@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EventFactory extends Factory
 {
+    private static string $png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+
     protected $model = Event::class;
 
     public function definition(): array
@@ -21,5 +23,19 @@ class EventFactory extends Factory
             'started_at' => now(),
             'ended_at' => now()->addWeek(),
         ];
+    }
+
+    public function banner(): EventFactory
+    {
+        return $this->afterCreating(function (Event $event) {
+            $event->addMediaFromBase64(static::$png)->usingFileName('banner.png')->toMediaLibrary('banner');
+        });
+    }
+
+    public function background(): EventFactory
+    {
+        return $this->afterCreating(function (Event $event) {
+            $event->addMediaFromBase64(static::$png)->usingFileName('background.png')->toMediaLibrary('banner');
+        });
     }
 }

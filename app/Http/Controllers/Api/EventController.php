@@ -26,6 +26,7 @@ class EventController extends Controller
                 ->orderByDesc('started_at')
                 ->orderByDesc('name')
                 ->get()
+                ->append(['banner', 'background'])
         );
     }
 }

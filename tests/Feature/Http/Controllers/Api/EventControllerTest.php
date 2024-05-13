@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Api;
 use App\Enums\EventType;
 use App\Models\Event;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\Feature\Filament\Resources\HasUser;
 use Tests\TestCase;
 
@@ -16,11 +17,15 @@ class EventControllerTest extends TestCase
     public function test_list_available_invoice_events(): void
     {
         $this->givenLoginUser();
+        Storage::fake();
 
-        Event::factory()->count(5)->create([
-            'started_at' => now(),
-            'ended_at' => now()->addWeek(),
-        ]);
+        Event::factory()
+            ->banner()
+            ->background()
+            ->count(5)->create([
+                'started_at' => now(),
+                'ended_at' => now()->addWeek(),
+            ]);
         Event::factory()->count(5)->create([
             'started_at' => now()->subWeek(),
             'ended_at' => now()->subDay(),
