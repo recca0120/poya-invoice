@@ -18,6 +18,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class EventUsersRelationManager extends RelationManager
 {
+    protected static ?string $title = '抽獎名單';
+
+    protected static ?string $pluralLabel = '抽獎名單';
+
+    protected static ?string $modelLabel = '抽獎名單';
+
+    protected static ?string $pluralModelLabel = '抽獎名單';
+
     protected static string $relationship = 'eventUsers';
 
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
@@ -39,8 +47,10 @@ class EventUsersRelationManager extends RelationManager
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord()))
                     ->required(),
                 Forms\Components\ToggleButtons::make('approved')
+                    ->label('符合條件')
                     ->options(YesNo::class)
-                    ->grouped(),
+                    ->grouped()
+                    ->default(YesNo::YES),
             ]);
     }
 
@@ -56,7 +66,7 @@ class EventUsersRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('user.phone_number')->label('手機號碼'),
                 Tables\Columns\TextColumn::make('code')
                     ->label(value(static fn (Event $event) => $event->type->getColumnName(), $this->getOwnerRecord())),
-                Tables\Columns\ToggleColumn::make('approved'),
+                Tables\Columns\ToggleColumn::make('approved')->label('符合條件'),
             ])
             ->filters([
                 //

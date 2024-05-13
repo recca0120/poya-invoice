@@ -19,11 +19,19 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class EventPrizesRelationManager extends RelationManager
 {
+    protected static ?string $title = '獎項';
+
+    protected static ?string $pluralLabel = '獎項';
+
+    protected static ?string $modelLabel = '獎項';
+
+    protected static ?string $pluralModelLabel = '獎項';
+
+    protected static string $relationship = 'eventPrizes';
+
     protected $listeners = ['refreshRelation' => '$refresh'];
 
     protected static bool $isLazy = false;
-
-    protected static string $relationship = 'eventPrizes';
 
     public function form(Form $form): Form
     {
@@ -46,9 +54,10 @@ class EventPrizesRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->modifyQueryUsing(fn (Builder $query) => $query->with('eventWinners.eventUser.user'))
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('quantity')->numeric(),
+                Tables\Columns\TextColumn::make('name')->label('獎項名稱'),
+                Tables\Columns\TextColumn::make('quantity')->label('數量')->numeric(),
                 Tables\Columns\TextColumn::make('winners')
+                    ->label('得獎者')
                     ->listWithLineBreaks()
                     ->limitList(2)
                     ->expandableLimitedList()
