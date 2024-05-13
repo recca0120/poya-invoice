@@ -50,7 +50,7 @@ class EventUsersRelationManager extends RelationManager
                     ->label('符合條件')
                     ->options(YesNo::class)
                     ->grouped()
-                    ->default(YesNo::YES),
+                    ->default(YesNo::YES->value),
             ]);
     }
 

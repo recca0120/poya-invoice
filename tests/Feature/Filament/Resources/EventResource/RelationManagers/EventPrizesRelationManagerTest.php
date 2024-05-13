@@ -78,9 +78,9 @@ class EventPrizesRelationManagerTest extends TestCase
         $user = $eventUser->user;
 
         $this->assertEquals([
-            $eventPrize->name,
-            $eventUser->code,
             $event->name,
+            $eventUser->code,
+            $eventPrize->name,
             $user->name,
             $user->member_code,
             $user->phone_number,

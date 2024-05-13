@@ -19,6 +19,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
+ * @property string $name
  * @property EventType $type
  * @property Carbon $started_at
  * @property Carbon $ended_at

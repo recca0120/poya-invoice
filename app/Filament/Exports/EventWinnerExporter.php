@@ -16,12 +16,15 @@ class EventWinnerExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('prize_name')
-                ->label('獎項')
-                ->getStateUsing(fn (EventWinner $record) => $record->eventPrize->name),
+            ExportColumn::make('event_name')
+                ->label('活動名稱')
+                ->getStateUsing(fn (EventWinner $record) => $record->eventUser->event->name),
             ExportColumn::make('code')
                 ->label('序號')
                 ->getStateUsing(fn (EventWinner $record) => $record->eventUser->code),
+            ExportColumn::make('prize_name')
+                ->label('獎項')
+                ->getStateUsing(fn (EventWinner $record) => $record->eventPrize->name),
             ExportColumn::make('event_name')
                 ->label('活動名稱')
                 ->getStateUsing(fn (EventWinner $record) => $record->eventUser->event->name),
