@@ -14,7 +14,7 @@ class UserController extends Controller
     public function profile(Request $request): JsonResource
     {
         return JsonResource::make(
-            $request->user()->makeHidden(['email_verified_at', 'phone_number'])
+            $request->user()->makeHidden(['email_verified_at'])
         );
     }
 

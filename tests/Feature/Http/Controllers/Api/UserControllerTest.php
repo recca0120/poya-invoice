@@ -41,7 +41,6 @@ class UserControllerTest extends TestCase
         ]);
 
         $this->getJson('/api/user/event')
-            ->dump()
             ->assertOk()
             ->assertJsonStructure([
                 'data' => [
