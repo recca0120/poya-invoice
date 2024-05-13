@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property int $id
@@ -42,5 +44,22 @@ class EventUser extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function eventWinners(): HasMany
+    {
+        return $this->hasMany(EventWinner::class);
+    }
+
+    public function eventPrizes(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            EventPrize::class,
+            EventWinner::class,
+            'event_user_id',
+            'id',
+            'id',
+            'event_prize_id'
+        )->orderBy('event_prize_id');
     }
 }

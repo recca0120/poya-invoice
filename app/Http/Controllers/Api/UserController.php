@@ -26,6 +26,7 @@ class UserController extends Controller
 
         $events = EventUser::query()
             ->with('event:id,name')
+            ->with('eventPrizes:event_prizes.id,event_prizes.name')
             ->when($eventType, function (Builder $query, $eventType) {
                 return $query->whereRelation('event', 'type', $eventType);
             })
