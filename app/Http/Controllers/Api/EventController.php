@@ -24,7 +24,11 @@ class EventController extends Controller
         content: new OAT\MediaType(
             mediaType: 'application/json',
             schema: new OAT\Schema(properties: [
-                new OAT\Property(property: 'data', type: 'array', items: new OAT\Items(ref: Event::class)),
+                new OAT\Property(
+                    property: 'data',
+                    type: 'array',
+                    items: new OAT\Items(ref: Event::class)
+                ),
             ])
         ),
     )]
@@ -43,6 +47,7 @@ class EventController extends Controller
                 ->orderByDesc('name')
                 ->get()
                 ->append(['banner', 'background'])
+                ->makeHidden(['deleted_at', 'media'])
         );
     }
 }

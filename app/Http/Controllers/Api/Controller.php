@@ -6,14 +6,10 @@ use OpenApi\Attributes as OAT;
 
 #[OAT\OpenApi(
     security: [['bearerAuth' => [], 'secret' => []]],
-    externalDocs: new OAT\ExternalDocumentation(
-        description: '範例程式下載',
-        url: '../sample_code/sample_code.zip'
-    ),
 )]
 #[OAT\Info(
     version: '1.0.0',
-    title: '介接文件',
+    title: '文件',
     attachables: [new OAT\Attachable()],
 )]
 #[OAT\License(name: 'MIT', identifier: 'MIT')]

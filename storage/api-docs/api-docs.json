@@ -8,6 +8,54 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/login": {
+            "post": {
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "登入",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "xxxxxxxxx"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/event": {
             "get": {
                 "operationId": "5b36b96541628c5513c9ae68890bb3c6",
@@ -95,6 +143,16 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-05-20T17:06:44.000000Z"
+                    },
+                    "banner": {
+                        "description": "Banner",
+                        "type": "string",
+                        "example": "banner.png"
+                    },
+                    "background": {
+                        "description": "背景圖",
+                        "type": "string",
+                        "example": "background.png"
                     }
                 },
                 "type": "object"
