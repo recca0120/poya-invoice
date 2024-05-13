@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -23,15 +24,25 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name'),
                 Forms\Components\TextInput::make('email')->email(),
                 Forms\Components\TextInput::make('password'),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('roles'))
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('roles')
+                    ->getStateUsing(function (User $record) {
+                        return $record->roles->pluck('name', 'id');
+                    })
+                    ->badge(),
             ])
             ->filters([
                 //

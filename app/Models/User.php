@@ -8,6 +8,7 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +21,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $member_code
  * @property string $phone_number
  * @property string $email
+ * @property Collection<int, Role> $roles
  *
  * @method static UserFactory factory($count = null, $state = [])
  *
