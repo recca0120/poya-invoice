@@ -33,6 +33,7 @@ class EventControllerTest extends TestCase
 
         $response = $this->getJson('/api/event?type='.EventType::INVOICE->value)->assertOk();
         $response->assertJsonCount(5, 'data');
+        $response->dump();
     }
 
     public function test_list_available_sn_events(): void

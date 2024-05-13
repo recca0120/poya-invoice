@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Rules\EventRule;
 use Illuminate\Http\Request;

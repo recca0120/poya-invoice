@@ -1,0 +1,120 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "介接文件",
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/event": {
+            "get": {
+                "operationId": "5b36b96541628c5513c9ae68890bb3c6",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "invoice",
+                                "sn"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "取得活動資訊",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Event"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Event": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "description": "代號",
+                        "type": "string",
+                        "example": "20240200001"
+                    },
+                    "name": {
+                        "description": "名稱",
+                        "type": "string",
+                        "example": "發票抽獎"
+                    },
+                    "type": {
+                        "description": "類型",
+                        "type": "string",
+                        "enum": [
+                            "invoice",
+                            "sn"
+                        ],
+                        "example": "invoice"
+                    },
+                    "terms": {
+                        "description": "活動條款",
+                        "type": "string",
+                        "example": "活動條款"
+                    },
+                    "privacy": {
+                        "description": "個人資料聲明",
+                        "type": "string",
+                        "example": "個人資料聲明"
+                    },
+                    "started_at": {
+                        "description": "開始時間",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-13T17:06:44.000000Z"
+                    },
+                    "ended_at": {
+                        "description": "結束時間",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-20T17:06:44.000000Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": [],
+            "secret": []
+        }
+    ],
+    "externalDocs": {
+        "description": "範例程式下載",
+        "url": "../sample_code/sample_code.zip"
+    }
+}

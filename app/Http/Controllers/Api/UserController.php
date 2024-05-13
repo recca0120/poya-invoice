@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\EventType;
-use App\Http\Controllers\Controller;
 use App\Models\EventUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
