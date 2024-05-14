@@ -15,7 +15,7 @@ class EventController extends Controller
     #[OAT\Get(
         path: '/api/event',
         parameters: [
-            new OAT\Parameter(name: 'type', in: 'query', schema: new OAT\Schema(enum: EventType::class)),
+            new OAT\QueryParameter(name: 'type', schema: new OAT\Schema(enum: EventType::class)),
         ]
     )]
     #[OAT\Response(
