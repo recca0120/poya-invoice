@@ -4,12 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Hash;
+use Rawilk\FilamentPasswordInput\Password;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class UserResource extends Resource
 {
@@ -25,7 +29,17 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->label('姓名'),
                 Forms\Components\TextInput::make('email')->email(),
-                Forms\Components\TextInput::make('password')->label('密碼'),
+                Password::make('password')
+                    ->label('密碼')
+                    ->copyable()
+                    ->regeneratePassword()
+                    ->required(static fn (string $operation) => $operation === 'create')
+                    ->rules(config('filament-breezy.password_rules', 'max:8'))
+                    ->beforeStateDehydrated(function (Password $component, $state) {
+                        if ($state) {
+                            $component->state(Hash::make($state));
+                        }
+                    }),
                 Forms\Components\Select::make('roles')->label('角色')
                     ->relationship('roles', 'name')
                     ->multiple()
@@ -52,6 +66,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
+                Impersonate::make()->redirectTo(Filament::getUrl()),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

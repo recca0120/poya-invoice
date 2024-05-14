@@ -18,7 +18,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "rawilk/filament-password-input": "^2.0",
-        "spatie/laravel-medialibrary": "^11.4"
+        "spatie/laravel-medialibrary": "^11.4",
+        "stechstudio/filament-impersonate": "^3.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

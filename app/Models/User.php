@@ -72,6 +72,11 @@ class User extends Authenticatable implements FilamentUser
         return true;
     }
 
+    public function canImpersonate(): bool
+    {
+        return $this->hasRole('super_admin');
+    }
+
     public function toWinnerString(): string
     {
         $lookup = [
