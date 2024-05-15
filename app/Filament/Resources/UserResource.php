@@ -40,6 +40,8 @@ class UserResource extends Resource
                             $component->state(Hash::make($state));
                         }
                     }),
+                Forms\Components\TextInput::make('member_code')->label('會員卡號'),
+                Forms\Components\TextInput::make('phone_number')->label('電話'),
                 Forms\Components\Select::make('roles')->label('角色')
                     ->relationship('roles', 'name')
                     ->multiple()
