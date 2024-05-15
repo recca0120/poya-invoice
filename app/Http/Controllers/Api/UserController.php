@@ -14,9 +14,6 @@ class UserController extends Controller
 {
     #[OAT\Get(
         path: '/api/user/profile',
-        parameters: [
-            new OAT\QueryParameter(name: 'type', schema: new OAT\Schema(enum: EventType::class)),
-        ]
     )]
     #[OAT\Response(
         response: 200,

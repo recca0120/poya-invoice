@@ -10,7 +10,6 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.2",
-        "cweagans/composer-patches": "2.0.0-beta2",
         "darkaonline/l5-swagger": "^8.6",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
@@ -63,11 +62,6 @@
     "extra": {
         "laravel": {
             "dont-discover": []
-        },
-        "patches": {
-            "bezhansalleh/filament-shield": {
-                "0001-fix-tab-bug": "patches/bezhansalleh/filament-shield/0001-fix-tab-bug.patch"
-            }
         }
     },
     "config": {
@@ -76,8 +70,7 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "cweagans/composer-patches": true
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "stable",
