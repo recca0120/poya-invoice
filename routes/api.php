@@ -18,7 +18,7 @@ Route::controller(EventController::class)
         Route::get('/', 'index');
     });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:poya')->group(function () {
     Route::controller(UserController::class)
         ->prefix('/user')
         ->group(function () {

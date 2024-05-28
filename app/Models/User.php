@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -65,6 +66,20 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(static function (self $user) {
+            if (! $user->email) {
+                $user->email = $user->member_code.'@fake.com.tw';
+            }
+
+            if (! $user->password) {
+                $user->password = Str::random(32);
+            }
+        });
     }
 
     public function canAccessPanel(Panel $panel): bool

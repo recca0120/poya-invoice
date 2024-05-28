@@ -16,7 +16,6 @@ class EventControllerTest extends TestCase
 
     public function test_list_available_invoice_events(): void
     {
-        $this->givenLoginUser();
         Storage::fake();
 
         Event::factory()
@@ -37,8 +36,6 @@ class EventControllerTest extends TestCase
 
     public function test_list_available_sn_events(): void
     {
-        $this->givenLoginUser();
-
         Event::factory()->count(5)->create([
             'started_at' => now(),
             'ended_at' => now()->addWeek(),

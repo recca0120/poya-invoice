@@ -7,7 +7,6 @@ use App\Models\User;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
-use Illuminate\Support\Str;
 
 class EventUserImporter extends Importer
 {
@@ -77,8 +76,6 @@ class EventUserImporter extends Importer
             'member_code' => $memberCode,
             'phone_number' => $phoneNumber,
             'name' => $name,
-            'email' => $memberCode.'@fake.com.tw',
-            'password' => Str::random(32),
         ]);
 
         return EventUser::firstOrNew([
