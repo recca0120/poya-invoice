@@ -31,4 +31,7 @@ return [
         ],
     ],
 
+    'poya' => [
+        'base_url' => env('POYA_BASE_URL', 'https://apitest4.91app.com/'),
+    ],
 ];

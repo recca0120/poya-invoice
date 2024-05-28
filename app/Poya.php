@@ -15,7 +15,7 @@ class Poya
 
     public function __construct(
         private readonly ClientInterface $client,
-        private $baseUrl = 'https://apitest4.91app.com/member-sso/poya'
+        private $baseUrl = 'https://apitest4.91app.com/'
     ) {
     }
 
@@ -32,8 +32,9 @@ class Poya
      */
     public function user(): array
     {
+        $url = rtrim($this->baseUrl, '/').'/member-sso/poya';
         $query = ['access_token' => $this->token];
-        $request = new Request('GET', $this->baseUrl.'?'.http_build_query($query));
+        $request = new Request('GET', $url.'?'.http_build_query($query));
         $response = $this->client->sendRequest($request);
 
         $result = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);

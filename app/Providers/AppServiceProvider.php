@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Poya;
+use GuzzleHttp\Client;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -28,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::shouldBeStrict();
+
+        $this->app->singleton(
+            Poya::class,
+            fn () => new Poya(app(new Client(), config('services.poya.base_url')))
+        );
 
         Auth::extend('poya', static function () {
             return new RequestGuard(static function (Request $request) {

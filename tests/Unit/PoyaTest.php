@@ -36,6 +36,8 @@ class PoyaTest extends TestCase
         ], $poya->user());
 
         $request = $client->getLastRequest();
+
+        self::assertEquals('/member-sso/poya', $request->getUri()->getPath());
         self::assertEquals(
             'access_token=2a094fa16dfb9bc48c23b18663d25b1f00cd375e',
             $request->getUri()->getQuery()
