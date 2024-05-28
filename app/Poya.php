@@ -4,6 +4,7 @@ namespace App;
 
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Str;
+use JsonException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use RuntimeException;
@@ -27,9 +28,9 @@ class Poya
 
     /**
      * @throws ClientExceptionInterface
-     * @throws \JsonException
+     * @throws JsonException
      */
-    public function user()
+    public function user(): array
     {
         $query = ['access_token' => $this->token];
         $request = new Request('GET', $this->baseUrl.http_build_query($query));
