@@ -12,18 +12,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::controller(EventController::class)
+    ->prefix('/event')
+    ->group(function () {
+        Route::get('/', 'index');
+    });
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)
         ->prefix('/user')
         ->group(function () {
             Route::get('/profile', 'profile');
             Route::get('/event', 'event');
-        });
-
-    Route::controller(EventController::class)
-        ->prefix('/event')
-        ->group(function () {
-            Route::get('/', 'index');
         });
 
     Route::controller(EventUserController::class)
