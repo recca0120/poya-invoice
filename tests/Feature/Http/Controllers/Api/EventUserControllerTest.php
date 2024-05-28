@@ -131,6 +131,6 @@ class EventUserControllerTest extends TestCase
         );
         $this->swap(ClientInterface::class, $client);
 
-        $this->withToken('2a094fa16dfb9bc48c23b18663d25b1f00cd375');
+        $this->withToken('2a094fa16dfb9bc48c23b18663d25b1f00cd375e');
     }
 }

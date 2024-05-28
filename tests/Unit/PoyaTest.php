@@ -27,11 +27,18 @@ class PoyaTest extends TestCase
             ],
         ], JSON_THROW_ON_ERROR)));
         $poya = new Poya($client);
+        $poya->setToken('2a094fa16dfb9bc48c23b18663d25b1f00cd375e');
 
         self::assertEquals([
             'cell_phone' => '0912345678',
             'name' => '易小九',
             'outer_member_code' => '277123456789',
         ], $poya->user());
+
+        $request = $client->getLastRequest();
+        self::assertEquals(
+            'access_token=2a094fa16dfb9bc48c23b18663d25b1f00cd375e',
+            $request->getUri()->getQuery()
+        );
     }
 }
