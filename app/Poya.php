@@ -15,7 +15,7 @@ class Poya
 
     public function __construct(
         private readonly ClientInterface $client,
-        private $baseUrl = 'https://apitest4.91app.com/'
+        private readonly string $baseUrl = 'https://apitest4.91app.com/'
     ) {
     }
 

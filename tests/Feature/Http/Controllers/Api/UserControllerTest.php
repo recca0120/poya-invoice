@@ -18,7 +18,7 @@ class UserControllerTest extends TestCase
 
     public function test_get_profile(): void
     {
-        $user = $this->givenLoginUser();
+        $user = $this->givenCreatedPoyaUser();
 
         $this->getJson('/api/user/profile')
             ->assertOk()
@@ -31,7 +31,7 @@ class UserControllerTest extends TestCase
 
     public function test_get_user_events(): void
     {
-        $user = $this->givenLoginUser();
+        $user = $this->givenCreatedPoyaUser();
         /** @var Event $event */
         $event = Event::factory()->createOne();
         $eventUsers = EventUser::factory()->for($user)->for($event)->count(2)->create();
@@ -55,7 +55,8 @@ class UserControllerTest extends TestCase
 
     public function test_get_user_invoice_events(): void
     {
-        $user = $this->givenLoginUser();
+        $user = $this->givenCreatedPoyaUser();
+
         EventUser::factory()->for($user)->count(2)->create();
 
         $this->getJson('/api/user/event?type='.EventType::INVOICE->value)
@@ -73,7 +74,7 @@ class UserControllerTest extends TestCase
 
     public function test_get_user_sn_events(): void
     {
-        $user = $this->givenLoginUser();
+        $user = $this->givenCreatedPoyaUser();
         EventUser::factory()->for($user)->count(2)->create();
 
         $this->getJson('/api/user/event?type='.EventType::SN->value)

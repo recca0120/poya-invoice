@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Psr\Http\Client\ClientInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,10 +31,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::shouldBeStrict();
 
-        $this->app->singleton(
-            Poya::class,
-            fn () => new Poya(app(new Client(), config('services.poya.base_url')))
-        );
+        $this->app->bind(ClientInterface::class, function () {
+            return new Client();
+        });
+
+        $this->app->singleton(Poya::class, function () {
+            return new Poya(app(ClientInterface::class), config('services.poya.base_url'));
+        });
 
         Auth::extend('poya', static function () {
             return new RequestGuard(static function (Request $request) {
