@@ -16,6 +16,7 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "php-http/mock-client": "^1.6",
         "rawilk/filament-password-input": "^2.0",
         "spatie/laravel-medialibrary": "^11.4",
         "stechstudio/filament-impersonate": "^3.8"
