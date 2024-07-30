@@ -140,7 +140,9 @@ class Event extends Model implements HasMedia
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->using(EventUser::class);
+        return $this
+            ->belongsToMany(User::class, 'event_users')
+            ->using(EventUser::class);
     }
 
     public function registerMediaConversions(?Media $media = null): void

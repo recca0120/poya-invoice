@@ -16,7 +16,7 @@ class PoyaTest extends TestCase
      */
     public function test_get_user(): void
     {
-        $client = new Client();
+        $client = new Client;
         $client->addResponse(new Response(200, [], json_encode([
             'Status' => 'Success',
             'Message' => '',

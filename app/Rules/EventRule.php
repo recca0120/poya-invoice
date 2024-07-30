@@ -9,9 +9,7 @@ use Illuminate\Support\Str;
 
 readonly class EventRule implements ValidationRule
 {
-    public function __construct(private EventType $eventType)
-    {
-    }
+    public function __construct(private EventType $eventType) {}
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

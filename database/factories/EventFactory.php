@@ -35,7 +35,7 @@ class EventFactory extends Factory
     public function background(): EventFactory
     {
         return $this->afterCreating(function (Event $event) {
-            $event->addMediaFromBase64(static::$png)->usingFileName('background.png')->toMediaLibrary('banner');
+            $event->addMediaFromBase64(static::$png)->usingFileName('background.png')->toMediaLibrary('background');
         });
     }
 }

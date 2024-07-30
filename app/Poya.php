@@ -3,11 +3,11 @@
 namespace App;
 
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Str;
 use JsonException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
-use RuntimeException;
 
 class Poya
 {
@@ -16,8 +16,7 @@ class Poya
     public function __construct(
         private readonly ClientInterface $client,
         private readonly string $baseUrl = 'https://apitest4.91app.com/'
-    ) {
-    }
+    ) {}
 
     public function setToken($token): static
     {
@@ -28,6 +27,7 @@ class Poya
 
     /**
      * @throws ClientExceptionInterface
+     * @throws AuthenticationException
      * @throws JsonException
      */
     public function user(): array
@@ -48,7 +48,7 @@ class Poya
         $result = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 
         if ($result['Status'] !== 'Success') {
-            throw new RuntimeException($result['Message']);
+            throw new AuthenticationException($result['Message']);
         }
 
         return $this->toSnakeCase($result['Data']);

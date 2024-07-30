@@ -45,7 +45,7 @@ trait HasUser
      */
     private function givenPoyaUser(): Fluent
     {
-        $client = new Client();
+        $client = new Client;
         $client->addResponse(
             new Response(200, [], json_encode($this->data, JSON_THROW_ON_ERROR))
         );
